@@ -1,0 +1,93 @@
+[hidden],
+.hidden {
+	display: none !important;
+}
+
+#cf7-responder-panel {
+	padding-top: 0 !important;
+}
+
+.responder-main-fields .mail-field {
+	margin-bottom: 25px;
+}
+
+.responder-main-fields h2:not(:first-child) {
+	margin-top: 20px !important;
+}
+
+.responder-main-fields label {
+	display: block;
+	margin-bottom: 5px;
+}
+
+.responder-main-fields hr {
+	margin-top: 20px;
+}
+
+.responder-main-fields .mail-field-title {
+	font-weight: bold;
+}
+
+.metabox-responder select {
+	background-position: left 5px top 55%;
+	min-width: 280px;
+	padding: 0 8px 0 24px;
+}
+
+.metabox-responder.ltr select {
+	background-position: right 5px top 55%;
+	padding: 0 24px 0 8px;
+}
+
+.metabox-responder input:not([type="checkbox"]) {
+	min-width: 280px;
+	padding: 0 8px;
+}
+
+.metabox-responder .custom-field {
+	padding-bottom: 5px;
+}
+
+.metabox-responder .custom-field .field-map,
+.metabox-responder .custom-field .field-option-map {
+	display: flex;
+	margin: 0 -10px;
+	width: 100%;
+}
+
+.metabox-responder .custom-field .field-map p,
+.metabox-responder .custom-field .field-option-map p {
+	max-width: 280px;
+	padding: 0 10px;
+	width: 100%;
+}
+
+.metabox-responder .custom-field .field-map input[type="text"],
+.metabox-responder .custom-field .field-map select,
+.metabox-responder .custom-field .field-option-map input[type="text"],
+.metabox-responder .custom-field .field-option-map select {
+	max-width: 280px;
+	min-width: 100%;
+	width: 100%;
+}
+
+.metabox-responder .custom-field .field-options-map {
+	padding-right: 20px;
+	margin: 0 -5px;
+}
+
+.metabox-responder.ltr .custom-field .field-options-map {
+	padding-left: 20px;
+}
+
+.metabox-responder .custom-field .field-option-map p {
+	margin: 10px 0;
+}
+
+.responder-main-fields label[for^="responder-value-"]:before {
+	content: attr(data-counter) ". ";
+}
+
+.responder-main-fields #add-custom-field {
+	margin-top: 10px;
+}

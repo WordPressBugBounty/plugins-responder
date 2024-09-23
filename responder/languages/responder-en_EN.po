@@ -1,0 +1,1187 @@
+# Copyright (C) 2020 Rav Messer
+# This file is distributed under the same license as the Responder plugin.
+msgid ""
+msgstr ""
+"Project-Id-Version: Responder 4.3.1\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/responder\n"
+"Last-Translator: 1 <1>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2023-01-17T07:14:37+00:00\n"
+"PO-Revision-Date: 2023-01-17 12:56+0530\n"
+"Language: en\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 3.2.2\n"
+
+#. Plugin Name of the plugin
+msgid "Responder"
+msgstr ""
+
+#. Plugin URI of the plugin
+msgid "https://wordpress.org/plugins/responder/"
+msgstr ""
+
+#. Description of the plugin
+msgid "תוסף רב מסר מאפשר חיבור קל ופשוט עם התוספים הפופולארים- אלמנטור, אלמנטור פרו, Contact form 7 ו- Pojo Forms."
+msgstr ""
+
+#. Author of the plugin
+msgid "Rav Messer"
+msgstr ""
+
+#. Author URI of the plugin
+msgid "https://responder.co.il"
+msgstr ""
+
+#: api/Responder/System.php:125
+#: api/Responder/System.php:175
+#: api/Responder/System.php:226
+#: api/ResponderLive/System.php:180
+#: api/ResponderLive/System.php:221
+msgid "שם"
+msgstr "Name"
+
+#: api/Responder/System.php:131
+#: api/Responder/System.php:174
+#: api/Responder/System.php:225
+#: api/ResponderLive/System.php:136
+#: api/ResponderLive/System.php:179
+#: api/ResponderLive/System.php:220
+#: integrations/Elementor/Controls/FieldType.php:29
+msgid "כתובת מייל"
+msgstr "Email Field"
+
+#: api/Responder/System.php:137
+#: api/Responder/System.php:176
+#: api/Responder/System.php:227
+#: api/ResponderLive/System.php:142
+#: api/ResponderLive/System.php:181
+#: api/ResponderLive/System.php:222
+#: integrations/Elementor/Controls/FieldType.php:28
+msgid "טלפון"
+msgstr "Phone"
+
+#: api/ResponderLive/System.php:118
+msgid "שם פרטי"
+msgstr "First name"
+
+#: api/ResponderLive/System.php:124
+msgid "שם משפחה"
+msgstr "Last name"
+
+#: api/ResponderLive/System.php:130
+msgid "שם מלא"
+msgstr "Full name"
+
+#. translators: %1$s and %1$s are open and close <strong> tag indicators and %3$s is a php version
+#: check_support.php:19
+msgid "תוסף %1$sרב מסר%2$s זקוק לגרסת PHP %3$s מינימום או גרסה עדכנית יותר בשביל לפעול."
+msgstr "%1$sResponder%2$s plugin in need for minimum PHP %3$s version and up to work."
+
+#. translators: %1$s and %1$s are open and close <strong> tag inticators
+#: check_support.php:29
+msgid "תוסף %1$sרב מסר%2$s זקוק ל-cURL PHP Extension להיות מותקן בשביל לפעול."
+msgstr "%1$sResponder%2$s plugin in need for cURL PHP Extension to work."
+
+#: integrations/ContactForm7/Custom/PhoneValidation.php:20
+#: templates/integrations/elementor/frontend_form.tpl.php:19
+msgid "יש להזין מספר טלפון ישראלי תקין"
+msgstr "Fill in a valid Israeli phone number"
+
+#: integrations/ContactForm7/FormHelper.php:237
+#: integrations/PojoForms/FormHelper.php:68
+msgid "פנייה חדשה מטופס האתר"
+msgstr "New submission from the website form"
+
+#: integrations/ContactForm7/FormHelper.php:245
+msgid "הטופס נשלח בהצלחה"
+msgstr "Thank you for filling out your information"
+
+#: integrations/ContactForm7/FormHelper.php:246
+msgid "הטופס לא נשלח, בדקו שכל שדות החובה מלאים ונסו שוב"
+msgstr "The form was not sent, check all mandatory fields are filled and try again"
+
+#: integrations/ContactForm7/FormHelper.php:247
+msgid "מלאו את שדות החובה ושלחו שוב את הטופס"
+msgstr "One or more fields have an error. Please check and try again"
+
+#: integrations/ContactForm7/FormHelper.php:248
+#: templates/integrations/elementor/frontend_form.tpl.php:16
+msgid "התקבלה שגיאה בזמן השליחה של הטופס, נסו שוב עוד כמה דקות"
+msgstr "There was an error trying to send your message, please try again later"
+
+#: integrations/ContactForm7/FormHelper.php:249
+msgid "אשרו את התנאים לשליחת הטופס"
+msgstr "You must accept the terms and conditions before sending your message"
+
+#: integrations/ContactForm7/FormHelper.php:250
+msgid "זהו שדה חובה"
+msgstr "The field is required"
+
+#: integrations/ContactForm7/FormHelper.php:251
+msgid "מספר התווים ארוך מידי, בדקו שוב את השדה"
+msgstr "The field is too long"
+
+#: integrations/ContactForm7/FormHelper.php:252
+msgid "מספר התווים קצר מידי, בדקו שוב"
+msgstr "The field is too short"
+
+#: integrations/ContactForm7/FormHelper.php:253
+msgid "התאריך שנכתב לא תקין"
+msgstr "Date written incorrectly"
+
+#: integrations/ContactForm7/FormHelper.php:254
+#: integrations/ContactForm7/FormHelper.php:255
+msgid "התאריך שהוזן לא תואם את התאריכים האפשריים"
+msgstr "The date entered does not match the possible dates"
+
+#: integrations/ContactForm7/FormHelper.php:256
+msgid "התקבלה שגיאה בזמן העלאת הקובץ. אפשר לנסות שוב עוד כמה דקות"
+msgstr "An error occurred while uploading the file. You can try again in a few minutes"
+
+#: integrations/ContactForm7/FormHelper.php:257
+msgid "לא ניתן לצרף קובץ מסוג זה"
+msgstr "This file type cannot be attached"
+
+#: integrations/ContactForm7/FormHelper.php:258
+msgid "הקובץ גדול מידי"
+msgstr "The file is too large"
+
+#: integrations/ContactForm7/FormHelper.php:259
+msgid "התקבלה שגיאה בזמן העלאת הקובץ. נסו שוב"
+msgstr "An error occurred while uploading the file. Please try again"
+
+#: integrations/ContactForm7/FormHelper.php:260
+msgid "בדקו שהמספר שהוזן נכון"
+msgstr "Check that the number entered is correct"
+
+#: integrations/ContactForm7/FormHelper.php:261
+msgid "מספר התווים נמוך מהמינימום המותר"
+msgstr "The number of characters is lower than the minimum allowed"
+
+#: integrations/ContactForm7/FormHelper.php:262
+msgid "מספר התווים גבוהה מהמקסימום המותר"
+msgstr "The number of characters is higher than the maximum allowed"
+
+#: integrations/ContactForm7/FormHelper.php:263
+msgid "התשובה לא נכונה, נסו שוב"
+msgstr "The answer is incorrect, please try again"
+
+#: integrations/ContactForm7/FormHelper.php:264
+msgid "בדקו שכתובת המייל תקינה"
+msgstr "Check that the email address is correct"
+
+#: integrations/ContactForm7/FormHelper.php:265
+msgid "בדקו שכתובת הקישור תקינה"
+msgstr "Check that the link address is correct"
+
+#: integrations/ContactForm7/FormHelper.php:266
+msgid "מספר הטלפון לא תקין"
+msgstr "Invalid Phone Number"
+
+#: integrations/ContactForm7/FormHelper.php:342
+msgid "(חובה)"
+msgstr "(required)"
+
+#: integrations/ContactForm7/Integration.php:127
+#: integrations/Elementor/Integration.php:48
+#: integrations/ElementorPro/ActionAfterSubmit.php:14
+#: integrations/ElementorPro/ActionAfterSubmit.php:36
+#: integrations/ElementorPro/Controls/SystemChoice.php:51
+#: templates/integrations/contact_form_7/panel.tpl.php:54
+#: templates/integrations/contact_form_7/tab.tpl.php:48
+#: templates/integrations/elementor/tab/forms.tpl.php:51
+#: templates/tabs/lists.tpl.php:27
+msgid "רב מסר"
+msgstr "Responder"
+
+#: integrations/Elementor/Controls/ContentControls.php:20
+msgid "כללי"
+msgstr "General"
+
+#. translators: %s is a list name
+#: integrations/Elementor/Controls/ContentControls.php:29
+msgid "טופס זה מקושר לרשימה: %s"
+msgstr "Form is connected to list: %s"
+
+#: integrations/Elementor/Controls/ContentControls.php:65
+msgid "ישראל ישראלי"
+msgstr "John Doe"
+
+#: integrations/Elementor/Controls/ContentControls.php:68
+msgid "ישראל"
+msgstr "John"
+
+#: integrations/Elementor/Controls/ContentControls.php:72
+msgid "ישראלי"
+msgstr "Doe"
+
+#: integrations/Elementor/Controls/ContentControls.php:76
+msgid "example@email.co.il"
+msgstr "example@email.com"
+
+#: integrations/Elementor/Controls/ContentControls.php:80
+msgid "054-1234567"
+msgstr "054-1234567"
+
+#: integrations/Elementor/Controls/ContentControls.php:104
+msgid "כפתור"
+msgstr "Submit"
+
+#: integrations/Elementor/Controls/ContentControls.php:112
+msgid "טקסט בכפתור"
+msgstr "Text on Button"
+
+#: integrations/Elementor/Controls/ContentControls.php:113
+msgid "הרשמה"
+msgstr "Subscribe"
+
+#: integrations/Elementor/Controls/ContentControls.php:127
+msgid "פעולה לאחר השליחה"
+msgstr "Action after Submit"
+
+#: integrations/Elementor/Controls/ContentControls.php:131
+msgid "להציג הודעה בעמוד הנוכחי"
+msgstr "Show Confirm Message"
+
+#: integrations/Elementor/Controls/ContentControls.php:132
+msgid "מעבר לעמוד תודה"
+msgstr "Redirect To Thank You Page"
+
+#: integrations/Elementor/Controls/ContentControls.php:141
+msgid "כתובת עמוד תודה"
+msgstr "Thank You Page url address"
+
+#: integrations/Elementor/Controls/ContentControls.php:154
+#: templates/integrations/contact_form_7/panel.tpl.php:135
+#: templates/integrations/contact_form_7/tab.tpl.php:182
+msgid "העברת פרמטרים לכתובת עמוד התודה"
+msgstr "Transfer URL Parameters to thank you page"
+
+#: integrations/Elementor/Controls/ContentControls.php:155
+#: integrations/Elementor/Controls/ContentControls.php:169
+#: integrations/Elementor/Controls/ContentControls.php:245
+#: integrations/Elementor/Controls/ContentControls.php:257
+#: integrations/Elementor/Controls/ContentControls.php:272
+#: integrations/Elementor/Controls/ContentControls.php:300
+#: integrations/ElementorPro/ActionAfterSubmit.php:140
+#: integrations/ElementorPro/ActionAfterSubmit.php:154
+#: templates/tabs/debugger.tpl.php:61
+#: templates/tabs/debugger.tpl.php:78
+msgid "כן"
+msgstr "Yes"
+
+#: integrations/Elementor/Controls/ContentControls.php:156
+#: integrations/Elementor/Controls/ContentControls.php:170
+#: integrations/Elementor/Controls/ContentControls.php:246
+#: integrations/Elementor/Controls/ContentControls.php:258
+#: integrations/Elementor/Controls/ContentControls.php:273
+#: integrations/Elementor/Controls/ContentControls.php:301
+#: integrations/ElementorPro/ActionAfterSubmit.php:141
+#: integrations/ElementorPro/ActionAfterSubmit.php:155
+#: templates/tabs/debugger.tpl.php:58
+#: templates/tabs/debugger.tpl.php:84
+msgid "לא"
+msgstr "No"
+
+#: integrations/Elementor/Controls/ContentControls.php:168
+msgid "פתיחה בעמוד חדש"
+msgstr "Open In New Tab"
+
+#: integrations/Elementor/Controls/ContentControls.php:189
+msgid "טקסט הודעת הצלחה"
+msgstr "Success message after submit"
+
+#: integrations/Elementor/Controls/ContentControls.php:190
+msgid "תודה על הרשמתך"
+msgstr "The form was successfully submitted"
+
+#: integrations/Elementor/Controls/ContentControls.php:198
+msgid "טקסט במצב שליחה"
+msgstr "Submitting Text"
+
+#: integrations/Elementor/Controls/ContentControls.php:199
+msgid "הטופס נשלח"
+msgstr "Submitting"
+
+#: integrations/Elementor/Controls/ContentControls.php:219
+#: templates/integrations/contact_form_7/tab.tpl.php:118
+#: templates/integrations/pojo_forms/tab.tpl.php:67
+msgid "כתובת מייל או טלפון חייבים להופיע כשדות חובה בטופס"
+msgstr "Email or Phone must be required fields in the form"
+
+#: integrations/Elementor/Controls/ContentControls.php:244
+msgid "הוספת שדה לטופס"
+msgstr "Show field"
+
+#: integrations/Elementor/Controls/ContentControls.php:256
+msgid "שדה חובה"
+msgstr "Required"
+
+#: integrations/Elementor/Controls/ContentControls.php:271
+#: templates/integrations/contact_form_7/tab.tpl.php:127
+msgid "שדה נסתר"
+msgstr "Hidden Field"
+
+#: integrations/Elementor/Controls/ContentControls.php:285
+msgid "ערך קבוע בשדה נסתר"
+msgstr "Hidden Field Value"
+
+#: integrations/Elementor/Controls/ContentControls.php:299
+#: templates/integrations/contact_form_7/tab.tpl.php:154
+msgid "שאיבת ערך השדה מכתובת הקישור"
+msgstr "Get from url parameters"
+
+#. translators: %s is a uri param
+#: integrations/Elementor/Controls/ContentControls.php:305
+msgid "לדוגמה: http://yourpage.com/pagename?%s=value"
+msgstr "Example: http://yourpage.com/pagename?%s=value"
+
+#: integrations/Elementor/Controls/ContentControls.php:319
+msgid "סוג שדה"
+msgstr "Field Type"
+
+#: integrations/Elementor/Controls/ContentControls.php:332
+#: templates/integrations/contact_form_7/tab.tpl.php:124
+#: templates/integrations/pojo_forms/tab.tpl.php:73
+msgid "שם השדה"
+msgstr "Label"
+
+#: integrations/Elementor/Controls/ContentControls.php:344
+msgid "טקסט לדוגמה בפנים השדה"
+msgstr "Placeholder"
+
+#: integrations/Elementor/Controls/ContentControls.php:346
+msgid "כדי שהטקסט בתוך השדה יוצג בטופס עברו ללשונית העיצוב ובחרו זאת בהגדרת אופן תצוגת השדה"
+msgstr "The option to show the placeholder or not is located in style tab"
+
+#: integrations/Elementor/Controls/ContentControls.php:358
+#: integrations/Elementor/Controls/StyleControls.php:350
+msgid "רוחב עמודה"
+msgstr "Width"
+
+#: integrations/Elementor/Controls/ContentControls.php:386
+msgid "מיקום השדה"
+msgstr "Position"
+
+#: integrations/Elementor/Controls/FieldType.php:24
+#: integrations/Elementor/Controls/FieldType.php:35
+msgid "שורת טקסט"
+msgstr "Text"
+
+#: integrations/Elementor/Controls/FieldType.php:25
+#: integrations/Elementor/Controls/FieldType.php:36
+msgid "טקסט ארוך"
+msgstr "Long text"
+
+#: integrations/Elementor/Controls/FieldType.php:26
+msgid "תאריך"
+msgstr "Date"
+
+#: integrations/Elementor/Controls/FieldType.php:27
+msgid "מספר"
+msgstr "Number"
+
+#: integrations/Elementor/Controls/FieldType.php:30
+msgid "בחירה מרשימה נפתחת"
+msgstr "Dropdown"
+
+#: integrations/Elementor/Controls/FieldType.php:31
+msgid "בחירת כמה אפשרויות"
+msgstr "Checkbox"
+
+#: integrations/Elementor/Controls/FieldType.php:32
+msgid "בוליאני(כן/לא)"
+msgstr "Boolean (yes/no)"
+
+#: integrations/Elementor/Controls/StyleControls.php:22
+#: templates/integrations/elementor/tab/forms.tpl.php:34
+msgid "טופס"
+msgstr "Form"
+
+#: integrations/Elementor/Controls/StyleControls.php:31
+msgid "זהו טופס שוכב"
+msgstr "Horizontal form"
+
+#: integrations/Elementor/Controls/StyleControls.php:32
+#: templates/integrations/elementor/tab/forms.tpl.php:90
+msgid "טופס עומד"
+msgstr "Vertical form"
+
+#: integrations/Elementor/Controls/StyleControls.php:40
+msgid "כיוון הטופס"
+msgstr "Direction"
+
+#: integrations/Elementor/Controls/StyleControls.php:44
+msgid "ימין לשמאל - כמו בעברית"
+msgstr "RTL"
+
+#: integrations/Elementor/Controls/StyleControls.php:45
+msgid "שמאל לימין"
+msgstr "LTR"
+
+#: integrations/Elementor/Controls/StyleControls.php:53
+msgid "אופן תצוגת השדה"
+msgstr "Label Type"
+
+#: integrations/Elementor/Controls/StyleControls.php:57
+msgid "שם השדה בלבד"
+msgstr "Label Only Visible"
+
+#: integrations/Elementor/Controls/StyleControls.php:58
+msgid "טקסט פנימי בלבד"
+msgstr "Placeholder Only Visible"
+
+#: integrations/Elementor/Controls/StyleControls.php:59
+msgid "הצגת שם השדה וטקסט פנימי"
+msgstr "Label And Placeholder"
+
+#: integrations/Elementor/Controls/StyleControls.php:68
+msgid "רווח שורות"
+msgstr "Rows Gap"
+
+#: integrations/Elementor/Controls/StyleControls.php:88
+msgid "ריווח עמודות"
+msgstr "Columns Gap"
+
+#: integrations/Elementor/Controls/StyleControls.php:110
+msgid "רווח בין השדה לטקסט"
+msgstr "Text Gap"
+
+#: integrations/Elementor/Controls/StyleControls.php:131
+msgid "ריווח בין הכפתור לשדות"
+msgstr "Special Button Gap"
+
+#: integrations/Elementor/Controls/StyleControls.php:156
+msgid "כפתור שליחה"
+msgstr "Submit Button"
+
+#: integrations/Elementor/Controls/StyleControls.php:173
+msgid "הצבעה עם העכבר"
+msgstr "Hover"
+
+#: integrations/Elementor/Controls/StyleControls.php:180
+#: integrations/Elementor/Controls/StyleControls.php:236
+#: integrations/Elementor/Controls/StyleControls.php:499
+msgid "צבע רקע"
+msgstr "Background Color"
+
+#: integrations/Elementor/Controls/StyleControls.php:192
+#: integrations/Elementor/Controls/StyleControls.php:248
+#: integrations/Elementor/Controls/StyleControls.php:413
+#: integrations/Elementor/Controls/StyleControls.php:561
+msgid "צבע טקסט"
+msgstr "Text Color"
+
+#: integrations/Elementor/Controls/StyleControls.php:203
+#: integrations/Elementor/Controls/StyleControls.php:311
+#: integrations/Elementor/Controls/StyleControls.php:512
+msgid "צבע הגבול"
+msgstr "Border Color"
+
+#: integrations/Elementor/Controls/StyleControls.php:217
+msgid "אנימציה"
+msgstr "Animation"
+
+#: integrations/Elementor/Controls/StyleControls.php:229
+msgid "רגיל"
+msgstr "Normal"
+
+#: integrations/Elementor/Controls/StyleControls.php:269
+msgid "סוג הגבול"
+msgstr "Border Type"
+
+#: integrations/Elementor/Controls/StyleControls.php:272
+msgid "בלי"
+msgstr "None"
+
+#: integrations/Elementor/Controls/StyleControls.php:273
+msgid "אחיד"
+msgstr "Solid"
+
+#: integrations/Elementor/Controls/StyleControls.php:274
+msgid "כפול"
+msgstr "Double"
+
+#: integrations/Elementor/Controls/StyleControls.php:275
+msgid "מנוקד"
+msgstr "Dotted"
+
+#: integrations/Elementor/Controls/StyleControls.php:276
+msgid "מקווקו"
+msgstr "Dashed"
+
+#: integrations/Elementor/Controls/StyleControls.php:277
+msgid "גרוב"
+msgstr "Groove"
+
+#: integrations/Elementor/Controls/StyleControls.php:288
+#: integrations/Elementor/Controls/StyleControls.php:524
+msgid "עובי הגבול"
+msgstr "Border Width"
+
+#: integrations/Elementor/Controls/StyleControls.php:326
+#: integrations/Elementor/Controls/StyleControls.php:537
+msgid "רדיוס הגבול"
+msgstr "Border Radius"
+
+#: integrations/Elementor/Controls/StyleControls.php:338
+msgid "ריווח טקסט (padding)"
+msgstr "Text Padding"
+
+#: integrations/Elementor/Controls/StyleControls.php:374
+msgid "יישור"
+msgstr "Alignment"
+
+#: integrations/Elementor/Controls/StyleControls.php:379
+#: integrations/Elementor/Controls/StyleControls.php:577
+msgid "שמאל"
+msgstr "Left"
+
+#: integrations/Elementor/Controls/StyleControls.php:383
+#: integrations/Elementor/Controls/StyleControls.php:576
+msgid "מרכז"
+msgstr "Center"
+
+#: integrations/Elementor/Controls/StyleControls.php:387
+#: integrations/Elementor/Controls/StyleControls.php:578
+msgid "ימין"
+msgstr "Right"
+
+#: integrations/Elementor/Controls/StyleControls.php:405
+msgid "השדות"
+msgstr "Fields"
+
+#: integrations/Elementor/Controls/StyleControls.php:425
+msgid "צבע טקסט בפנים השדה"
+msgstr "Text Color Inside"
+
+#: integrations/Elementor/Controls/StyleControls.php:437
+msgid "צבע ממלא מקום"
+msgstr "Placeholder Color"
+
+#: integrations/Elementor/Controls/StyleControls.php:449
+msgid "ריווח שדה מלמעלה ולמטה"
+msgstr "Padding Vertical"
+
+#: integrations/Elementor/Controls/StyleControls.php:469
+msgid "ריווח שדה מהצדדים"
+msgstr "Padding Horizontal"
+
+#: integrations/Elementor/Controls/StyleControls.php:553
+msgid "הודעת תודה"
+msgstr "Thank You Message"
+
+#: integrations/Elementor/Controls/StyleControls.php:573
+msgid "מיקום טקסט"
+msgstr "Text Align"
+
+#: integrations/ElementorPro/ActionAfterSubmit.php:94
+#: templates/integrations/contact_form_7/panel.tpl.php:67
+#: templates/integrations/contact_form_7/tab.tpl.php:62
+#: templates/integrations/elementor/tab/forms.tpl.php:74
+#: templates/integrations/pojo_forms/metabox.tpl.php:27
+#: templates/integrations/pojo_forms/tab.tpl.php:34
+msgid "הרשימה ברב מסר אליה יוכנסו פרטי הנמענים"
+msgstr "Choose Responder List"
+
+#: integrations/ElementorPro/ActionAfterSubmit.php:95
+msgid "*חובה להעביר לרב מסר שדה מייל או טלפון כדי שהחיבור יעבוד"
+msgstr "*Email or phone fields are required in order to save the subscribers in Responder"
+
+#: integrations/ElementorPro/ActionAfterSubmit.php:174
+#: templates/integrations/contact_form_7/tab.tpl.php:15
+#: templates/integrations/elementor/tab/index.tpl.php:12
+#: templates/tabs/connection.tpl.php:110
+msgid "צפייה בסרטון הדרכה"
+msgstr "Watch the tutorial"
+
+#: integrations/ElementorPro/ActionAfterSubmit.php:108
+#: templates/integrations/contact_form_7/panel.tpl.php:77
+#: templates/integrations/contact_form_7/panel.tpl.php:100
+#: templates/integrations/contact_form_7/tab.tpl.php:78
+#: templates/integrations/contact_form_7/tab.tpl.php:89
+#: templates/integrations/elementor/tab/forms.tpl.php:101
+#: templates/integrations/pojo_forms/metabox.tpl.php:76
+#: templates/integrations/pojo_forms/tab.tpl.php:53
+msgid "אם הנמען קיים ברשימה"
+msgstr "If the subscriber exist"
+
+#: integrations/ElementorPro/ActionAfterSubmit.php:114
+#: templates/integrations/contact_form_7/panel.tpl.php:82
+#: templates/integrations/contact_form_7/tab.tpl.php:80
+#: templates/integrations/elementor/tab/forms.tpl.php:106
+#: templates/integrations/pojo_forms/metabox.tpl.php:81
+#: templates/integrations/pojo_forms/tab.tpl.php:55
+msgid "שמור ותק ועדכן פרטים"
+msgstr "Update subscriber's details and keep seniority"
+
+#: integrations/ElementorPro/ActionAfterSubmit.php:115
+#: templates/integrations/contact_form_7/panel.tpl.php:85
+#: templates/integrations/contact_form_7/tab.tpl.php:81
+#: templates/integrations/elementor/tab/forms.tpl.php:109
+#: templates/integrations/pojo_forms/metabox.tpl.php:84
+#: templates/integrations/pojo_forms/tab.tpl.php:56
+msgid "איפוס ותק והרשמה מחדש"
+msgstr "Update subscriber's details and seniority"
+
+#: integrations/ElementorPro/ActionAfterSubmit.php:126
+msgid "אם הנמען קיים"
+msgstr "If subscriber exists"
+
+#: integrations/ElementorPro/ActionAfterSubmit.php:138
+msgid "להחליף את הפרטים הקיימים בפרטים חדשים"
+msgstr "Update his details"
+
+#: integrations/ElementorPro/ActionAfterSubmit.php:152
+msgid "לאפס את הותק ברשימה"
+msgstr "Update his seniority"
+
+#: integrations/ElementorPro/ActionAfterSubmit.php:170
+#: templates/integrations/contact_form_7/panel.tpl.php:49
+#: templates/integrations/contact_form_7/tab.tpl.php:43
+#: templates/integrations/elementor/tab/forms.tpl.php:46
+msgid "בחירת מערכת"
+msgstr "Choose Responder Version"
+
+#: integrations/ElementorPro/ActionAfterSubmit.php:184
+msgid "תגיות נמען"
+msgstr "Subscriber Tags"
+
+#: integrations/ElementorPro/Controls/SystemChoice.php:52
+#: templates/integrations/contact_form_7/panel.tpl.php:57
+#: templates/integrations/contact_form_7/tab.tpl.php:51
+#: templates/integrations/elementor/tab/forms.tpl.php:54
+#: templates/tabs/lists.tpl.php:37
+msgid "רב מסר - מערכת חדשה"
+msgstr "Responder - New Version"
+
+#: integrations/PojoForms/FormHelper.php:67
+msgid "טופס משולב רב מסר"
+msgstr "Integrated form with Responder"
+
+#: integrations/PojoForms/Integration.php:14
+msgid "הגדרות רב מסר"
+msgstr "Responder Settings"
+
+#: plugin/AdminNotices.php:20
+msgid "כדי להשתמש בתוסף יש להעתיק את הטוקן של תוסף הטפסים של וורדפרס ממערכת רב מסר . הטוקן נמצא בהגדרות המערכת בלשונית חיבורים חיצוניים."
+msgstr ""
+
+#: plugin/AdminNotices.php:24
+msgid "כדי להשתמש בתוסף יש למלא את שדות מפתח וסוד"
+msgstr ""
+
+#: plugin/AdminNotices.php:35
+msgid "שגיאה! הטוקן או הקוד הסודי אינם תקינים, או אין גישה לאינטרנט."
+msgstr ""
+
+#. translators: %s is an error message
+#: plugin/AdminNotices.php:41
+msgid "שגיאה בפועל: %s"
+msgstr ""
+
+#: plugin/AdminNotices.php:51
+msgid "חשבון רב מסר שלך מחובר בהצלחה!"
+msgstr ""
+
+#: plugin/Debugger.php:40
+msgid "Submission"
+msgstr ""
+
+#: plugin/Debugger.php:61
+msgid "Update"
+msgstr ""
+
+#: plugin/Debugger.php:81
+msgid "Responder Debug"
+msgstr ""
+
+#: plugin/Debugger.php:82
+msgid "Responder Submission"
+msgstr ""
+
+#: plugin/Debugger.php:83
+#: plugin/Debugger.php:84
+msgid "Add New Submission"
+msgstr ""
+
+#: plugin/Debugger.php:85
+msgid "Edit Submission"
+msgstr ""
+
+#: plugin/Debugger.php:86
+msgid "New Submission"
+msgstr ""
+
+#: plugin/Debugger.php:87
+#: plugin/Debugger.php:88
+msgid "View Submission"
+msgstr ""
+
+#: plugin/Debugger.php:89
+msgid "Search Submission"
+msgstr ""
+
+#: plugin/Debugger.php:90
+msgid "No Submissions Found"
+msgstr ""
+
+#: plugin/Debugger.php:91
+msgid "No Submissions found in trash"
+msgstr ""
+
+#: plugin/Debugger.php:92
+msgid "All Submissions"
+msgstr ""
+
+#: plugin/Debugger.php:103
+msgid "Submission Record"
+msgstr ""
+
+#: plugin/Settings.php:46
+msgid "יצירת טופס"
+msgstr "Create Form"
+
+#: plugin/Settings.php:53
+msgid "הגדרות"
+msgstr "Settings"
+
+#: plugin/Settings.php:63
+#: plugin/Settings.php:64
+msgid "רב מסר - תוסף טפסים"
+msgstr ""
+
+#: plugin/Settings.php:72
+msgid "עדכונים אוטומטיים אינם זמינים עבור תוסף זה."
+msgstr "Auto-updates are not available for this plugin."
+
+#: plugin/SettingsPage.php:72
+msgid "אין הרשאה מתאימה לגשת לעמוד הזה"
+msgstr ""
+
+#: templates/footer.tpl.php:3
+msgid "לכל שאלה פנו לצוות התמיכה של רב מסר שישמח לסייע!"
+msgstr ""
+
+#: templates/footer.tpl.php:8
+msgid "03-717-7777"
+msgstr ""
+
+#: templates/footer.tpl.php:13
+msgid "support@responder.co.il"
+msgstr ""
+
+#: templates/footer.tpl.php:20
+msgid "ימים א-ה משעה 9:00 עד 20:00"
+msgstr ""
+
+#: templates/footer.tpl.php:23
+msgid "ימי שישי וערבי חג משעה 08:00 עד 12:00"
+msgstr ""
+
+#: templates/integrations/contact_form_7/panel.tpl.php:37
+msgid "הגדרות חיבור רב מסר עם הטופס"
+msgstr "Form connect to Responder Settings"
+
+#: templates/integrations/contact_form_7/panel.tpl.php:41
+msgid "כאן תוכלו לערוך שינויים בחיבור הטופס עם רב מסר. מומלץ לא לשנות את ההגדרות"
+msgstr "Responder - Contact form 7 settings"
+
+#: templates/integrations/contact_form_7/panel.tpl.php:92
+#: templates/integrations/contact_form_7/tab.tpl.php:106
+#: templates/integrations/elementor/tab/forms.tpl.php:117
+msgid "הוספת תגיות לנמען"
+msgstr "Add tags"
+
+#: templates/integrations/contact_form_7/panel.tpl.php:106
+#: templates/integrations/contact_form_7/tab.tpl.php:95
+#: templates/integrations/elementor/tab/forms.tpl.php:127
+msgid "אם הנמען קיים, להחליף את הפרטים הקיימים שלו בפרטים החדשים"
+msgstr "If the subscriber exists, update his details"
+
+#: templates/integrations/contact_form_7/panel.tpl.php:113
+#: templates/integrations/contact_form_7/tab.tpl.php:100
+#: templates/integrations/elementor/tab/forms.tpl.php:136
+msgid "אם הנמען קיים, לאפס את הותק שלו ברשימה"
+msgstr "If the subscriber exists, update his seniority"
+
+#: templates/integrations/contact_form_7/panel.tpl.php:120
+#: templates/integrations/contact_form_7/tab.tpl.php:172
+#: templates/integrations/pojo_forms/tab.tpl.php:106
+msgid "כתובת עמוד תודה (רשות)"
+msgstr "Thank You Page URL address (Optional)"
+
+#: templates/integrations/contact_form_7/panel.tpl.php:123
+#: templates/integrations/contact_form_7/panel.tpl.php:150
+#: templates/integrations/contact_form_7/panel.tpl.php:157
+#: templates/integrations/contact_form_7/panel.tpl.php:164
+#: templates/integrations/contact_form_7/panel.tpl.php:171
+#: templates/integrations/contact_form_7/panel.tpl.php:178
+#: templates/integrations/contact_form_7/panel.tpl.php:197
+#: templates/integrations/contact_form_7/panel.tpl.php:229
+msgid "לדוגמה:"
+msgstr "Example:"
+
+#: templates/integrations/contact_form_7/panel.tpl.php:128
+#: templates/integrations/contact_form_7/tab.tpl.php:178
+msgid "פתיחה בחלון חדש"
+msgstr "Open in a new tab"
+
+#: templates/integrations/contact_form_7/panel.tpl.php:143
+msgid "שדות ראשיים - התאמת שדות הטופס לשדות ברב מסר"
+msgstr "Main fields - map the form fields to Responder"
+
+#: templates/integrations/contact_form_7/panel.tpl.php:148
+msgid "שדה שם מלא (במעבר לרב מסר המערכת מפצלת את השם באופן אוטומטי לשם פרטי ושם משפחה)"
+msgstr "Full Name field"
+
+#: templates/integrations/contact_form_7/panel.tpl.php:155
+msgid "שדה שם פרטי"
+msgstr "First Name field"
+
+#: templates/integrations/contact_form_7/panel.tpl.php:162
+msgid "שדה שם משפחה"
+msgstr "Last Name field"
+
+#: templates/integrations/contact_form_7/panel.tpl.php:169
+msgid "שדה כתובת מייל"
+msgstr "Email Field"
+
+#: templates/integrations/contact_form_7/panel.tpl.php:176
+msgid "שדה טלפון"
+msgstr "Phone Field"
+
+#: templates/integrations/contact_form_7/panel.tpl.php:183
+msgid "שדות מותאמים - התאמת שדות הטופס לשדות ברב מסר"
+msgstr "Custom fields - map the form fields to Responder"
+
+#: templates/integrations/contact_form_7/panel.tpl.php:194
+msgid "שם השדה כפי שמופיע בטופס:"
+msgstr "Field Name as shown in the form:"
+
+#: templates/integrations/contact_form_7/panel.tpl.php:202
+msgid "התאמה לשדה המותאם ברב מסר:"
+msgstr "Match custom field from the Responder list:"
+
+#: templates/integrations/contact_form_7/panel.tpl.php:221
+#: templates/integrations/elementor_pro/controls/fields_map.tpl.php:67
+msgid "התאמת אפשרויות הבחירה של"
+msgstr "Match options of the field"
+
+#: templates/integrations/contact_form_7/panel.tpl.php:254
+#: templates/integrations/contact_form_7/panel.tpl.php:258
+msgid "טוען שדות מחיבור רב מסר..."
+msgstr "Loading fields from Responder…"
+
+#: templates/integrations/contact_form_7/panel.tpl.php:255
+msgid "הוספת שדה לחיבור רב מסר"
+msgstr "Add custom field"
+
+#: templates/integrations/contact_form_7/tab.tpl.php:12
+#: templates/settings_page.tpl.php:29
+msgid "טפסים ל-Contact Form 7"
+msgstr ""
+
+#: templates/integrations/contact_form_7/tab.tpl.php:21
+#: templates/integrations/elementor/tab/forms.tpl.php:65
+#: templates/integrations/pojo_forms/tab.tpl.php:11
+msgid "שם הטופס (השם מוסתר למבקרים באתר)"
+msgstr "Form name (hidden from site visitors)"
+
+#. translators: %s date of now
+#: templates/integrations/contact_form_7/tab.tpl.php:30
+#: templates/integrations/pojo_forms/tab.tpl.php:20
+msgid "טופס רב מסר %s"
+msgstr "Responder Form %s"
+
+#: templates/integrations/contact_form_7/tab.tpl.php:64
+#: templates/integrations/elementor/tab/forms.tpl.php:78
+#: templates/integrations/elementor_pro/controls/fields_map.tpl.php:13
+#: templates/integrations/pojo_forms/tab.tpl.php:39
+#: templates/tabs/lists.tpl.php:49
+msgid "בחירת רשימה"
+msgstr "Choose Responder list"
+
+#: templates/integrations/contact_form_7/tab.tpl.php:115
+#: templates/integrations/pojo_forms/tab.tpl.php:63
+msgid "בחירת שדות לטופס (השדות מגיעים מהרשימה הנבחרת ברב מסר)"
+msgstr "Choose form fields"
+
+#: templates/integrations/contact_form_7/tab.tpl.php:125
+#: templates/integrations/pojo_forms/tab.tpl.php:74
+msgid "הצג"
+msgstr ""
+
+#: templates/integrations/contact_form_7/tab.tpl.php:126
+#: templates/integrations/pojo_forms/tab.tpl.php:75
+msgid "חובה"
+msgstr "Required"
+
+#: templates/integrations/contact_form_7/tab.tpl.php:132
+#: templates/integrations/contact_form_7/tab.tpl.php:137
+#: templates/integrations/pojo_forms/tab.tpl.php:81
+#: templates/integrations/pojo_forms/tab.tpl.php:86
+msgid "יש לבחור רשימה כדי לראות שדות לבחירה"
+msgstr "Choose Responder list to see available fields"
+
+#: templates/integrations/contact_form_7/tab.tpl.php:136
+#: templates/integrations/pojo_forms/tab.tpl.php:85
+msgid "שדות מותאמים"
+msgstr "Custom fields"
+
+#: templates/integrations/contact_form_7/tab.tpl.php:138
+#: templates/integrations/pojo_forms/tab.tpl.php:87
+msgid "טוען..."
+msgstr ""
+
+#: templates/integrations/contact_form_7/tab.tpl.php:152
+msgid "בחרו אחת מהאפשרויות"
+msgstr ""
+
+#: templates/integrations/contact_form_7/tab.tpl.php:153
+msgid "הגדרת ערך קבוע"
+msgstr ""
+
+#: templates/integrations/contact_form_7/tab.tpl.php:159
+msgid "הזינו כאן את ערך השדה נסתר"
+msgstr ""
+
+#: templates/integrations/contact_form_7/tab.tpl.php:163
+msgid "לדוגמה: http://yourpage.com/pagename?{{ uriParam }}=value"
+msgstr ""
+
+#: templates/integrations/contact_form_7/tab.tpl.php:186
+#: templates/integrations/pojo_forms/tab.tpl.php:112
+msgid "אם תשאירו את השדה ריק, הנמענים שלכם יישארו באותו דף לאחר שליחת טופס ההרשמה."
+msgstr ""
+
+#: templates/integrations/contact_form_7/tab.tpl.php:191
+#: templates/integrations/pojo_forms/tab.tpl.php:117
+msgid "טקסט כפתור"
+msgstr ""
+
+#: templates/integrations/contact_form_7/tab.tpl.php:193
+#: templates/integrations/contact_form_7/tab.tpl.php:194
+#: templates/integrations/pojo_forms/tab.tpl.php:119
+#: templates/integrations/pojo_forms/tab.tpl.php:120
+msgid "שליחה"
+msgstr ""
+
+#: templates/integrations/contact_form_7/tab.tpl.php:203
+#: templates/integrations/elementor/tab/index.tpl.php:29
+#: templates/integrations/pojo_forms/tab.tpl.php:129
+msgid "שומר..."
+msgstr ""
+
+#: templates/integrations/contact_form_7/tab.tpl.php:204
+#: templates/integrations/pojo_forms/tab.tpl.php:130
+msgid "הטופס נוצר בהצלחה"
+msgstr ""
+
+#: templates/integrations/contact_form_7/tab.tpl.php:205
+#: templates/integrations/contact_form_7/tab.tpl.php:208
+msgid "שמירה ומעבר ל-Contact Form 7"
+msgstr ""
+
+#: templates/integrations/elementor/frontend_form.tpl.php:17
+msgid "הזינו כתובת מייל תקינה"
+msgstr "Invalid Email"
+
+#: templates/integrations/elementor/frontend_form.tpl.php:18
+msgid "הזינו מספר תקין"
+msgstr "Invalid Number"
+
+#: templates/integrations/elementor/frontend_form.tpl.php:20
+msgid "הזינו תאריך תקין"
+msgstr "Invalid Date"
+
+#: templates/integrations/elementor/frontend_form.tpl.php:21
+msgid "לשליחת הטופס בהצלחה מלאו את השדה"
+msgstr "To submit the form successfully fill in the field"
+
+#: templates/integrations/elementor/tab/forms.tpl.php:22
+msgid "לא נמצאו טפסים"
+msgstr ""
+
+#: templates/integrations/elementor/tab/forms.tpl.php:29
+msgid "מחיקת טופס"
+msgstr ""
+
+#: templates/integrations/elementor/tab/forms.tpl.php:85
+msgid "סוג הטופס"
+msgstr ""
+
+#: templates/integrations/elementor/tab/forms.tpl.php:93
+msgid "טופס שוכב"
+msgstr ""
+
+#: templates/integrations/elementor/tab/forms.tpl.php:149
+msgid "טופס חדש"
+msgstr ""
+
+#: templates/integrations/elementor/tab/index.tpl.php:1
+#: templates/settings_page.tpl.php:45
+msgid "טפסים לאלמנטור"
+msgstr ""
+
+#: templates/integrations/elementor/tab/index.tpl.php:4
+msgid "יצירת טפסים לגרסת אלמנטור החינמית וחיבורם לרשימות ברב מסר. לאחר יצירת הטופס תוכלו לגרור אותו לכל עמוד באתר מתוך הממשק של אלמנטור"
+msgstr ""
+
+#: templates/integrations/elementor/tab/index.tpl.php:17
+msgid "הטפסים שלי"
+msgstr ""
+
+#: templates/integrations/elementor/tab/index.tpl.php:25
+msgid "שמירת הטפסים"
+msgstr ""
+
+#: templates/integrations/elementor/tab/index.tpl.php:33
+#: templates/integrations/elementor/tab/index.tpl.php:41
+msgid "ההגדרות נשמרו בהצלחה"
+msgstr ""
+
+#: templates/integrations/elementor/tab/index.tpl.php:37
+msgid "ההגדרות לא נשמרו"
+msgstr ""
+
+#: templates/integrations/elementor/tab/index.tpl.php:47
+msgid "הטופס מוכן לשימוש ונמצא בתפריט האלמנטים באלמנטור"
+msgstr ""
+
+#: templates/integrations/elementor/tab/index.tpl.php:52
+msgid "* אם בעתיד תכניסו שינויים ברשימות שלכם ברב מסר או תוסיפו שדות מותאמים,"
+msgstr ""
+
+#: templates/integrations/elementor/tab/index.tpl.php:55
+msgid "תוכלו לעדכן את זה בקלות גם בתוסף:"
+msgstr ""
+
+#: templates/integrations/elementor/tab/index.tpl.php:58
+msgid "כל מה שצריך לעשות זה ללחוץ שוב על כפתור השמירה. הטפסים באלמנטור יתרעננו ויתעדכנו."
+msgstr ""
+
+#: templates/integrations/elementor_pro/controls/fields_map.tpl.php:25
+msgid "התאמת שדות"
+msgstr "Fields Mapping"
+
+#: templates/integrations/pojo_forms/metabox.tpl.php:21
+msgid "התאמת שדות הטופס לשדות הקיימים ברשימה ברב מסר"
+msgstr "Map the form fields to the Responder"
+
+#: templates/integrations/pojo_forms/metabox.tpl.php:43
+#: templates/integrations/pojo_forms/metabox.tpl.php:60
+msgid "שם השדה ברב מסר:"
+msgstr "Field Name in Responder:"
+
+#: templates/integrations/pojo_forms/metabox.tpl.php:49
+#: templates/integrations/pojo_forms/metabox.tpl.php:66
+msgid "שם השדה בטופס"
+msgstr "Field Name in Form"
+
+#: templates/integrations/pojo_forms/tab.tpl.php:4
+#: templates/settings_page.tpl.php:37
+msgid "טפסים ל-Pojo Form"
+msgstr ""
+
+#: templates/integrations/pojo_forms/tab.tpl.php:101
+msgid "שימו לב: טפסי pojo אינם תומכים בשדה מסוג תאריך"
+msgstr ""
+
+#: templates/integrations/pojo_forms/tab.tpl.php:131
+#: templates/integrations/pojo_forms/tab.tpl.php:134
+msgid "שמירה ומעבר ל-Pojo Forms"
+msgstr ""
+
+#: templates/settings_page.tpl.php:14
+msgid "לפני שמתחילים"
+msgstr ""
+
+#: templates/settings_page.tpl.php:20
+#: templates/tabs/connection.tpl.php:24
+#: templates/tabs/connection.tpl.php:43
+msgid "חיבור לרב מסר"
+msgstr ""
+
+#: templates/settings_page.tpl.php:52
+#: templates/tabs/lists.tpl.php:9
+msgid "נמענים"
+msgstr ""
+
+#: templates/settings_page.tpl.php:60
+#: templates/tabs/debugger.tpl.php:5
+msgid "הגדרות מתקדמות"
+msgstr ""
+
+#: templates/tabs/connection.tpl.php:7
+#: templates/tabs/connection.tpl.php:119
+msgid "מפתח"
+msgstr ""
+
+#: templates/tabs/connection.tpl.php:12
+msgid "סוד"
+msgstr ""
+
+#: templates/tabs/connection.tpl.php:71
+#: templates/tabs/connection.tpl.php:137
+msgid "שמירה"
+msgstr ""
+
+#: templates/tabs/connection.tpl.php:106
+msgid "חיבור לרב מסר - מערכת חדשה"
+msgstr "Responder - New Version"
+
+#: templates/tabs/debugger.tpl.php:9
+msgid "כאן תוכלו להגדיר הגדרות מתקדמות"
+msgstr ""
+
+#: templates/tabs/debugger.tpl.php:18
+msgid "מיקום הפלאגין:"
+msgstr ""
+
+#: templates/tabs/debugger.tpl.php:28
+msgid "גרסת WordPress:"
+msgstr ""
+
+#: templates/tabs/debugger.tpl.php:43
+msgid "גרסת PHP:"
+msgstr ""
+
+#: templates/tabs/debugger.tpl.php:53
+msgid "תמיכה ב-cURL:"
+msgstr ""
+
+#: templates/tabs/debugger.tpl.php:70
+msgid "לאפשר DEBUG"
+msgstr ""
+
+#: templates/tabs/debugger.tpl.php:98
+msgid "שמירת הגדרות מתקדמות"
+msgstr ""
+
+#: templates/tabs/getting_started.tpl.php:49
+msgid "חיבור התוסף למערכת החדשה בלחיצה"
+msgstr ""
+
+#: templates/tabs/getting_started.tpl.php:50
+msgid "כאן"
+msgstr ""
+
+#: templates/tabs/lists.tpl.php:13
+msgid "בחרו רשימה מבין רשימות רב מסר שלכם וצפו בפרטי הנמענים"
+msgstr ""
+
+#: templates/tabs/lists.tpl.php:18
+msgid "הצגת רשימות ממערכת:"
+msgstr ""
+
+#: templates/tabs/lists.tpl.php:61
+msgid "טוען נמענים..."
+msgstr ""
+
+#: templates/tabs/lists.tpl.php:66
+msgid "סך הכל נמענים ברשימה:"
+msgstr ""
