@@ -254,13 +254,16 @@ trait StyleControls {
 			)
 		);
 
+		$button_typography_args = array(
+			'name'     => 'button_typography',
+			'selector' => '{{WRAPPER}} .res-button-submit',
+		);
+		if ( class_exists('Elementor\Core\Schemes\Typography' )) {
+			$button_typography_args['scheme'] = ElementorTypographySchemes::TYPOGRAPHY_4;
+		}
 		$this->add_group_control(
 			ElementorGroupControlTypography::get_type(),
-			array(
-				'name'     => 'button_typography',
-				'scheme'   => ElementorTypographySchemes::TYPOGRAPHY_4,
-				'selector' => '{{WRAPPER}} .res-button-submit',
-			)
+			$button_typography_args
 		);
 
 		$this->add_control(
@@ -484,13 +487,16 @@ trait StyleControls {
 			)
 		);
 
+		$field_typography_args = array(
+			'name'     => 'field_typography',
+			'selector' => '{{WRAPPER}} .res-form-field label, {{WRAPPER}} .res-form-field input, {{WRAPPER}} .res-form-field select, {{WRAPPER}} .res-form-field textarea'
+		);
+		if ( class_exists('Elementor\Core\Schemes\Typography') ) {
+			$field_typography_args['scheme'] = ElementorTypographySchemes::TYPOGRAPHY_3;
+		}
 		$this->add_group_control(
 			ElementorGroupControlTypography::get_type(),
-			array(
-				'name'     => 'field_typography',
-				'selector' => '{{WRAPPER}} .res-form-field label, {{WRAPPER}} .res-form-field input, {{WRAPPER}} .res-form-field select, {{WRAPPER}} .res-form-field textarea',
-				'scheme'   => ElementorTypographySchemes::TYPOGRAPHY_3,
-			)
+			$field_typography_args
 		);
 
 		$this->add_control(
@@ -584,13 +590,16 @@ trait StyleControls {
 			)
 		);
 
+		$thankyou_typography_args = array(
+			'name'     => 'thankyou_typography',
+			'selector' => '{{WRAPPER}} .responder-message-sent',
+		);
+		if ( class_exists('Elementor\Core\Schemes\Typography') ) {
+			$thankyou_typography_args['scheme'] = ElementorTypographySchemes::TYPOGRAPHY_2;
+		}
 		$this->add_group_control(
 			ElementorGroupControlTypography::get_type(),
-			array(
-				'name'     => 'thankyou_typography',
-				'scheme'   => ElementorTypographySchemes::TYPOGRAPHY_2,
-				'selector' => '{{WRAPPER}} .responder-message-sent',
-			)
+			$thankyou_typography_args
 		);
 
 		$this->end_controls_section();
