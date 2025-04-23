@@ -4,9 +4,9 @@ License URI: http://www.gnu.org/licenses/gpl-3.0.html
 License: GPLv3
 Requires at least: 4.7
 Requires PHP: 7.4
-Stable tag: 4.3.7
+Stable tag: 4.3.8
 Tags: Rav Messer, Responder
-Tested up to: 6.7
+Tested up to: 6.8
 
 Integration between Rav Messer and WordPress.
 
@@ -52,6 +52,9 @@ Enjoy!
 
 
 == Changelog ==
+
+= 4.3.8 =
+* Support WordPress 6.8
 
 = 4.3.7 =
 * New Relic support added
