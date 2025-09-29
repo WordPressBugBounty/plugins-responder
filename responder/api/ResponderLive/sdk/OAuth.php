@@ -60,7 +60,7 @@ class OAuth {
 
 			if ( ! empty( self::$auth_token ) ) {
 				//array_push( $options[ CURLOPT_HTTPHEADER ], 'Authorization: Bearer ' . utf8_encode( self::$auth_token ) );
-				$options[ CURLOPT_HTTPHEADER ][] = 'Authorization: Bearer ' . mb_convert_encoding( self::$auth_token,  'UTF-8' );
+				$options[ CURLOPT_HTTPHEADER ][] = 'Authorization: Bearer ' . utf8_encode( self::$auth_token );
 			}
 
 			switch ( $options[ CURLOPT_CUSTOMREQUEST ] ) {

@@ -23,10 +23,6 @@ class AJAX {
 	public static function createCF7Form() {
 		$form_data = PluginHelpers::getPostGetVariable( 'form_data', PluginHelpers::SANITIZE_ARRAY );
 
-		if ( ! current_user_can( 'manage_options' ) ) {
-			self::response( array( 'message' => 'Forbidden' ), 403 );
-		}
-
 		if ( empty( $form_data ) || ! self::verifyNonce() ) {
 			self::response( array(), 400 );
 		}
@@ -47,10 +43,6 @@ class AJAX {
 	public static function createPojoForm() {
 		$form_data = PluginHelpers::getPostGetVariable( 'form_data', PluginHelpers::SANITIZE_ARRAY );
 
-		if ( ! current_user_can( 'manage_options' ) ) {
-			self::response( array( 'message' => 'Forbidden' ), 403 );
-		}
-
 		if ( empty( $form_data ) || ! self::verifyNonce() ) {
 			self::response( array(), 400 );
 		}
@@ -67,10 +59,6 @@ class AJAX {
 	public static function createSubscribersTag() {
 		$tag_name = PluginHelpers::getPostGetVariable( 'tag_name', PluginHelpers::SANITIZE_TEXT_FIELD );
 
-		if ( ! current_user_can( 'manage_options' ) ) {
-			self::response( array( 'message' => 'Forbidden' ), 403 );
-		}
-
 		if ( empty( $tag_name ) || ! self::verifyNonce() ) {
 			return null;
 		}
@@ -82,10 +70,6 @@ class AJAX {
 
 	public static function getListsBySystemName() {
 		$system_name = PluginHelpers::getPostGetVariable( 'system_name', PluginHelpers::SANITIZE_TEXT_FIELD );
-
-		if ( ! current_user_can( 'manage_options' ) ) {
-			self::response( array( 'message' => 'Forbidden' ), 403 );
-		}
 
 		if ( empty( $system_name ) || ! self::verifyNonce() ) {
 			self::response( array(), 400 );
@@ -100,10 +84,6 @@ class AJAX {
 		$list_id     = PluginHelpers::getPostGetVariable( 'list_id', PluginHelpers::SANITIZE_ID );
 		$system_name = PluginHelpers::getPostGetVariable( 'system_name', PluginHelpers::SANITIZE_TEXT_FIELD );
 
-		if ( ! current_user_can( 'manage_options' ) ) {
-			self::response( array( 'message' => 'Forbidden' ), 403 );
-		}
-
 		if ( empty( $list_id ) || empty( $system_name ) || ! self::verifyNonce() ) {
 			self::response( array(), 400 );
 		}
@@ -117,10 +97,6 @@ class AJAX {
 		$list_id     = PluginHelpers::getPostGetVariable( 'list_id', PluginHelpers::SANITIZE_ID );
 		$system_name = PluginHelpers::getPostGetVariable( 'system_name', PluginHelpers::SANITIZE_TEXT_FIELD );
 
-		if ( ! current_user_can( 'manage_options' ) ) {
-			self::response( array( 'message' => 'Forbidden' ), 403 );
-		}
-
 		if ( empty( $list_id ) || empty( $system_name ) || ! self::verifyNonce() ) {
 			return self::response( array(), 400 );
 		}
@@ -131,10 +107,6 @@ class AJAX {
 	}
 
 	public static function getSubscribersTags() {
-
-		if ( ! current_user_can( 'manage_options' ) ) {
-			self::response( array( 'message' => 'Forbidden' ), 403 );
-		}
 
 		if ( ! self::verifyNonce() ) {
 			self::response( array(), 400 );
@@ -177,10 +149,6 @@ class AJAX {
 
 	public static function saveElementorFormsSettings() {
 		$forms_data = PluginHelpers::getPostGetVariable( 'forms_data', PluginHelpers::SANITIZE_ARRAY );
-
-		if ( ! current_user_can( 'manage_options' ) ) {
-			self::response( array( 'message' => 'Forbidden' ), 403 );
-		}
 
 		if ( ! self::verifyNonce() ) {
 			self::response( array(), 400 );
