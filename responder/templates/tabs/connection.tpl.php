@@ -34,6 +34,7 @@
   <?php endif ?>
 
   <form method="post" action="<?php echo esc_url( $connection_tab_url ); ?>">
+	<?php wp_nonce_field('responder_settings', 'responder_nonce'); ?>
 	<input type="hidden" name="rmp_action" value="connection_settings" />
 	<?php settings_fields( RAV_MESSER_OPTIONS_GROUP ); ?>
 
@@ -96,6 +97,7 @@
   <?php if ( $is_responder_live_enabled ) : ?>
 
 	<form method="post" action="<?php echo esc_url( $connection_tab_url ); ?>">
+		<?php wp_nonce_field('responder_settings', 'responder_nonce'); ?>
 	  <input type="hidden" name="rmp_action" value="connection_settings" />
 		<?php settings_fields( RAV_MESSER_OPTIONS_GROUP ); ?>
 

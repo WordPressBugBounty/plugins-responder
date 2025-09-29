@@ -94,6 +94,20 @@ class SettingsPage {
 	}
 
 	private static function saveSettings() {
+
+		if ( 'POST' !== ($_SERVER['REQUEST_METHOD'] ?? '') ) return;
+		if ( empty($_POST['rmp_action']) ) return;
+
+		if ( ! current_user_can('manage_options') ) {
+			wp_die( esc_html__('Forbidden', 'responder'), 403 );
+		}
+
+		// Read nonce WITHOUT extra sanitization
+		$nonce = isset($_POST['responder_nonce']) ? wp_unslash($_POST['responder_nonce']) : '';
+		if ( ! wp_verify_nonce($nonce, 'responder_settings') ) {
+			wp_die( esc_html__('Security check failed.', 'responder'), 403 );
+		}
+
 		$action   = PluginHelpers::getPostGetVariable( 'rmp_action', PluginHelpers::SANITIZE_TEXT_FIELD );
 		$settings = PluginHelpers::getPostGetVariable( 'responder', PluginHelpers::SANITIZE_ARRAY );
 
