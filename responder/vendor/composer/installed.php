@@ -1,9 +1,9 @@
 <?php return array(
     'root' => array(
         'name' => 'ravmesser/responder',
-        'pretty_version' => '4.4.1',
-        'version' => '4.4.1.0',
-        'reference' => '019531c5f17e8273b23a2a4695691ffda2938df3',
+        'pretty_version' => '4.4.2',
+        'version' => '4.4.2.0',
+        'reference' => '53c55cfd42315dc3b468299dab8198d429c03dee',
         'type' => 'wordpress-plugin',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -11,9 +11,9 @@
     ),
     'versions' => array(
         'ravmesser/responder' => array(
-            'pretty_version' => '4.4.1',
-            'version' => '4.4.1.0',
-            'reference' => '019531c5f17e8273b23a2a4695691ffda2938df3',
+            'pretty_version' => '4.4.2',
+            'version' => '4.4.2.0',
+            'reference' => '53c55cfd42315dc3b468299dab8198d429c03dee',
             'type' => 'wordpress-plugin',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

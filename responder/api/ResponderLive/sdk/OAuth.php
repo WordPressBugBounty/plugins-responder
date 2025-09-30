@@ -60,7 +60,20 @@ class OAuth {
 
 			if ( ! empty( self::$auth_token ) ) {
 				//array_push( $options[ CURLOPT_HTTPHEADER ], 'Authorization: Bearer ' . utf8_encode( self::$auth_token ) );
-				$options[ CURLOPT_HTTPHEADER ][] = 'Authorization: Bearer ' . utf8_encode( self::$auth_token );
+				//$options[ CURLOPT_HTTPHEADER ][] = 'Authorization: Bearer ' . utf8_encode( self::$auth_token );
+
+				if (PHP_VERSION_ID < 80200) {
+					// Before PHP 8.2, utf8_encode still exists and is not deprecated
+					$auth_token = utf8_encode(self::$auth_token);
+				} elseif (function_exists('mb_convert_encoding')) {
+					// On PHP 8.2+ and mbstring is enabled
+					$auth_token = mb_convert_encoding(self::$auth_token, 'UTF-8', 'ISO-8859-1');
+				} else {
+					// Fallback: use the raw token
+					$auth_token = self::$auth_token;
+				}
+
+				$options[CURLOPT_HTTPHEADER][] = 'Authorization: Bearer ' . $auth_token;
 			}
 
 			switch ( $options[ CURLOPT_CUSTOMREQUEST ] ) {

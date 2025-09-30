@@ -1,4 +1,5 @@
 <form id="uc_advanced_settings_wrapper" method="post" action="<?php echo esc_url( RavMesser\Plugin\SettingsPage::getUrl( '#plugin_config-advanced' ) ); ?>">
+	<?php wp_nonce_field('responder_settings', 'responder_nonce'); ?>
 	<input type="hidden" name="rmp_action" value="debugger_settings" />
 
 	<h1>

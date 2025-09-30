@@ -4,7 +4,7 @@ License URI: http://www.gnu.org/licenses/gpl-3.0.html
 License: GPLv3
 Requires at least: 4.7
 Requires PHP: 7.4
-Stable tag: 4.4.1
+Stable tag: 4.4.2
 Tags: Rav Messer, Responder
 Tested up to: 6.8
 
@@ -52,6 +52,9 @@ Enjoy!
 
 
 == Changelog ==
+
+= 4.4.2 =
+* Elementor Fix. Security enhancement
 
 = 4.4.1 =
 * Elementor Temporary Fix
