@@ -154,23 +154,25 @@
     }
 
     function onUpdateCustomField(event) {
-      var $customField = $(event.currentTarget).parents('.custom-field');
-          selectedPersonalFieldId = parseInt(event.currentTarget.value),
-          customField = {
-            'key': selectedPersonalFieldId,
-            'value': $customField.find('.field-map input').val()
-          };
-
-      $.RMP_AJAX('getPersonalFieldsByListId', {
+      const $cf = $(event.currentTarget).closest('.custom-field');
+      const selectedId = parseInt(event.currentTarget.value);
+      const personalFieldsPromise = $.RMP_AJAX('getPersonalFieldsByListId', {
         list_id: $subscribersList.val(),
-        system_name: $chosenSystem.val()
-      })
-        .done(function (personalFields) {
-          var selectedPersonalField = _.findWhere(personalFields, { id: selectedPersonalFieldId }),
-              customFieldTemplate   = generateCustomField(personalFields, selectedPersonalField, customField);
+          system_name: $chosenSystem.val()
+      });
 
-          $customField.replaceWith(customFieldTemplate);
-        });
+      personalFieldsPromise.done(function (personalFields) {
+        const selected = personalFields.find(pf => pf.id == selectedId);
+        const customField = {
+          key: selectedId,
+          value: $cf.find('.field-map input').val(),
+            options: []
+        };
+
+        $cf.replaceWith(
+          generateCustomField(personalFields, selected, customField)
+        );
+      });
     }
 
     function renderTags(tags, $tagsList, selectedTagsIds) {
@@ -232,14 +234,15 @@
     }
 
     function renderCustomFields(personalFields) {
-      var customFields = $customFieldsList.data('value');
+      const customFields = $customFieldsList.data('value');
 
       if (customFields) {
-        _.each(customFields, function(customField) {
-          var selectedPersonalField = _.findWhere(personalFields, { id: customField.key });
-
-          if (selectedPersonalField) {
-            renderCustomField(personalFields, selectedPersonalField, customField);
+        customFields.forEach(function (customField) {
+          const selected = personalFields.find(
+            pf => pf.id == customField.key
+          );
+          if (selected) {
+              renderCustomField(personalFields, selected, customField);
           }
         });
 
@@ -256,14 +259,104 @@
     }
 
     function generateCustomField(personalFields, selectedPersonalField, customField) {
-      var compiledCustomFieldTemplate = wp.template('custom-field-template');
+      const index = $customFieldsList.find('.custom-field').length + 1;
 
-      return compiledCustomFieldTemplate({
-        fieldIndex: $customFieldsList.find('.custom-field').length + 1,
-        customField: customField || {},
-        personalFields: _.filter(personalFields, function (personalField) { return !isNaN(personalField.id); }),
-        selectedPersonalField: selectedPersonalField || {},
+      const key = customField?.key || '';
+      const value = customField?.value || '';
+
+      let html = `
+        <div class="custom-field">
+
+          <div class="field-map">
+
+            <p>
+              <label for="responder-custom-value-${index}" data-count="${index}">
+                Field Name as shown in the form:
+              </label>
+
+              <input type="text"
+                    name="responder[CustomValue${index}]"
+                    id="responder-custom-value-${index}"
+                    placeholder="[field-123]"
+                    value="${value}">
+            </p>
+
+            <p>
+              <label for="responder-custom-key-${index}">
+                Match custom field from the Responder list:
+              </label>
+
+              <select id="responder-custom-key-${index}"
+                      name="responder[CustomKey${index}]">
+                <option disabled ${key ? '' : 'selected'}>---</option>
+      `;
+
+      personalFields.forEach(function (pf) {
+          if (isNaN(pf.id)) return;
+          const selected = pf.id == key ? 'selected' : '';
+          html += `<option value="${pf.id}" ${selected}>${pf.name}</option>`;
       });
+
+      html += `
+              </select>
+            </p>
+
+          </div>
+      `;
+
+      // ---- OPTIONS section ----
+      const selected = selectedPersonalField || {};
+      const pfOptions = selected.options || [];
+
+      if (pfOptions.length) {
+        html += `
+          <div class="field-options-map">
+            <span class="description">
+              Match options of the field
+              <span style="text-decoration: underline">${selected.name}</span>
+            </span>
+        `;
+
+        pfOptions.forEach((opt, optIndex) => {
+          const optValue =
+              customField?.options?.[optIndex]?.value || '';
+          const optSelectedKey =
+              customField?.options?.[optIndex]?.key || '';
+
+          html += `
+            <div class="field-option-map">
+
+              <p>
+                <input type="text"
+                      name="responder[CustomValue${index}_${optIndex + 1}]"
+                      placeholder="[field-option-123]"
+                      value="${optValue}">
+              </p>
+
+              <p>
+                <select name="responder[CustomKey${index}_${optIndex + 1}]">
+                  <option disabled ${optSelectedKey ? '' : 'selected'}>---</option>
+          `;
+
+          pfOptions.forEach(function (pfo) {
+              const sel = pfo.id == optSelectedKey ? 'selected' : '';
+              html += `<option value="${pfo.id}" ${sel}>${pfo.name}</option>`;
+          });
+
+          html += `
+                </select>
+              </p>
+
+            </div>
+          `;
+        });
+
+        html += `</div>`;
+      }
+
+      html += `</div>`;
+
+      return html;
     }
 
     function toggleAddCustomFieldButton(state) {

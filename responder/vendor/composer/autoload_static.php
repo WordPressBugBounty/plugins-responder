@@ -7,7 +7,7 @@ namespace Composer\Autoload;
 class ComposerStaticInit3219dd3ddfd3cb7dc29b5569de8a6f0b
 {
     public static $prefixLengthsPsr4 = array (
-        'R' => 
+        'R' =>
         array (
             'RavMesser\\Templetes\\' => 20,
             'RavMesser\\Plugin\\' => 17,
@@ -17,19 +17,19 @@ class ComposerStaticInit3219dd3ddfd3cb7dc29b5569de8a6f0b
     );
 
     public static $prefixDirsPsr4 = array (
-        'RavMesser\\Templetes\\' => 
+        'RavMesser\\Templetes\\' =>
         array (
             0 => __DIR__ . '/../..' . '/templates',
         ),
-        'RavMesser\\Plugin\\' => 
+        'RavMesser\\Plugin\\' =>
         array (
             0 => __DIR__ . '/../..' . '/plugin',
         ),
-        'RavMesser\\Integrations\\' => 
+        'RavMesser\\Integrations\\' =>
         array (
             0 => __DIR__ . '/../..' . '/integrations',
         ),
-        'RavMesser\\API\\' => 
+        'RavMesser\\API\\' =>
         array (
             0 => __DIR__ . '/../..' . '/api',
         ),

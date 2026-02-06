@@ -179,74 +179,12 @@ $custom_fields = wp_json_encode( ContactForm7FormHelper::getCustomFieldsAndOptio
 	</p>
 
 	<div id="responder-custom-fields-wrapper">
-	  <h2>
-		<?php esc_html_e( 'שדות מותאמים - התאמת שדות הטופס לשדות ברב מסר', 'responder' ); ?>
-	  </h2>
+	  <h2><?php esc_html_e( 'שדות מותאמים - התאמת שדות הטופס לשדות ברב מסר', 'responder' ); ?></h2>
 
-	  <div id="responder-custom-fields" data-value="<?php echo esc_attr( $custom_fields ); ?>">
+	  <div
+	  	id="responder-custom-fields"
+	  	data-value="<?php echo esc_attr( $custom_fields ); ?>">
 	  </div>
-
-	  <script type="text/template" id="tmpl-custom-field-template">
-		<div class="custom-field">
-		  <div class="field-map">
-			<p>
-			  <label for="responder-custom-value-{{ data.fieldIndex }}" data-count="{{ data.fieldIndex }}">
-				<?php esc_html_e( 'שם השדה כפי שמופיע בטופס:', 'responder' ); ?>
-			  </label>
-
-			  <input type="text" name="responder[CustomValue{{data.fieldIndex}}]" id="responder-custom-value-{{data.fieldIndex}}" placeholder="<?php esc_html_e( 'לדוגמה:', 'responder' ); ?> [field-123]" value="{{data.customField.value}}" />
-			</p>
-
-			<p>
-			  <label for="responder-custom-key-{{ data.fieldIndex }}">
-				<?php esc_html_e( 'התאמה לשדה המותאם ברב מסר:', 'responder' ); ?>
-			  </label>
-
-			  <select id="responder-custom-key-{{data.fieldIndex}}" name="responder[CustomKey{{data.fieldIndex}}]">
-				<option disabled {{ data.selectedPersonalField.id ? '' : 'selected'}}>---</option>
-				<# _.each(data.personalFields, function(personalField) { #>
-				  <# var selectedOption = personalField.id === data.selectedPersonalField.id ? 'selected' : ''; #>
-
-				  <option value="{{ personalField.id }}" {{selectedOption}}>
-					{{personalField.name}}
-				  </option>
-				<# }); #>
-			  </select>
-			</p>
-		  </div>
-
-		  <# if (data.selectedPersonalField.options && data.selectedPersonalField.options.length) { #>
-			<div class="field-options-map">
-			  <span class="description">
-				<?php esc_html_e( 'התאמת אפשרויות הבחירה של', 'responder' ); ?> <span style="text-decoration: underline">{{data.selectedPersonalField.name}}</span>
-			  </span>
-
-			  <# _.each(data.selectedPersonalField.options, function(selectedPersonalFieldOption, optionIndex) { #>
-				<# var customFieldOption = data.customField.options ? data.customField.options[optionIndex] || {} : {} #>
-
-				<div class="field-option-map">
-				  <p>
-					<input type="text" name="responder[CustomValue{{ data.fieldIndex }}_{{ optionIndex + 1 }}]" placeholder="<?php esc_html_e( 'לדוגמה:', 'responder' ); ?> [field-option-123]" value="{{ customFieldOption.value }}" />
-				  </p>
-
-				  <p>
-					<select name="responder[CustomKey{{ data.fieldIndex }}_{{ optionIndex + 1 }}]">
-					  <option disabled {{ customFieldOption.key ? '' : 'selected' }}>---</option>
-					  <# _.each(data.selectedPersonalField.options, function(personalFieldOption) { #>
-						<# var selectedOption = personalFieldOption.id === customFieldOption.key ? 'selected' : ''; #>
-						<option value="{{ personalFieldOption.id }}" {{ selectedOption }}>
-						  {{ personalFieldOption.name }}
-						</option>
-					  <# }); #>
-					</select>
-				  </p>
-				</div>
-			  <# }) #>
-			</div>
-		  <# } #>
-
-		</div>
-	  </script>
 
 	  <a
 		id="add-custom-field"

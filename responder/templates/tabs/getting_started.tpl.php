@@ -41,6 +41,7 @@
 
   <?php if ( $responder_live_is_not_enabled ) : ?>
 	<form id="rmp-responder-live-enable-form" method="post" action="<?php echo esc_url( $responder_live_enable_url ); ?>">
+    <?php wp_nonce_field('responder_settings', 'responder_nonce'); ?>
 		<?php settings_fields( RAV_MESSER_OPTIONS_GROUP ); ?>
 	  <input type="hidden" name="rmp_action" value="connection_settings" />
 	  <input type="hidden" name="responder[responder_live_enabled]" value="true" />
