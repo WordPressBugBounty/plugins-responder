@@ -50,7 +50,7 @@ class FormWidget extends ElementorWidgetBase {
 	}
 
 	public function get_style_depends() {
-		return array( 'rmp-form-widget-elementor-css' );
+		return array( 'rmp-elementor-form-widget-css' ); // PR1-I16: the registered handle (was a wrong name).
 	}
 
 	public function get_title() {
@@ -75,6 +75,31 @@ class FormWidget extends ElementorWidgetBase {
 
 		$this->form_settings      = ElementorDataManager::getFormSettings( $form_id );
 		$this->is_form_horizontal = PluginHelpers::ifExistsAndEqual( $this->form_settings, 'form_defaults_type', 'hor' );
-		$this->personal_fields    = PluginHelpers::getVal( $this->form_settings, 'list_custom_fields', array() );
+		$this->personal_fields    = self::uniqueFieldsById( PluginHelpers::getVal( $this->form_settings, 'list_custom_fields', array() ) );
+	}
+
+	/**
+	 * PR1-I32: forms saved without a list by an older version hold every personal field twice, and Elementor writes
+	 * "Cannot redeclare control" notices for each copy. Keep the first field of each id.
+	 */
+	private static function uniqueFieldsById( $fields ) {
+		$unique = array();
+		$seen   = array();
+
+		foreach ( (array) $fields as $field ) {
+			$id = is_array( $field ) && isset( $field['id'] ) ? (string) $field['id'] : null;
+
+			if ( null !== $id && isset( $seen[ $id ] ) ) {
+				continue;
+			}
+
+			if ( null !== $id ) {
+				$seen[ $id ] = true;
+			}
+
+			$unique[] = $field;
+		}
+
+		return $unique;
 	}
 }

@@ -55,7 +55,7 @@
 
 	  <?php endif ?>
 
-	  <li class="<?php echo esc_attr( RavMesser\Plugin\SettingsPage::isDebuggerActive() ? '' : 'hidden' ); ?>">
+	  <li>
 		<a href="#plugin_config-advanced">
 		  <?php esc_html_e( 'הגדרות מתקדמות', 'responder' ); ?>
 		</a>
@@ -97,7 +97,7 @@
 	  <?php require_once RAV_MESSER_TEMPLATES_DIR . '/tabs/connection.tpl.php'; ?>
 	</div>
 
-	<div id="plugin_config-advanced" class="<?php echo esc_attr( RavMesser\Plugin\SettingsPage::isDebuggerActive() ? '' : 'hidden' ); ?>">
+	<div id="plugin_config-advanced">
 	  <?php require_once RAV_MESSER_TEMPLATES_DIR . '/tabs/debugger.tpl.php'; ?>
 	</div>
 

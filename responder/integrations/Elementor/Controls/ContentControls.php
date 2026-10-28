@@ -151,7 +151,8 @@ trait ContentControls {
 			'url_thankyou_add_params',
 			array(
 				'type'      => ElementorControlsMananger::SWITCHER,
-				'label'     => esc_html__( 'העברת פרמטרים לכתובת עמוד התודה', 'responder' ),
+				'label'       => esc_html__( 'העברת פרמטרים לכתובת עמוד התודה', 'responder' ),
+				'description' => esc_html__( 'כל השדות שמולאו בטופס, כולל מייל, טלפון ושדות מוסתרים, יתווספו לכתובת עמוד התודה.', 'responder' ),
 				'label_on'  => esc_html__( 'כן', 'responder' ),
 				'label_off' => esc_html__( 'לא', 'responder' ),
 				'default'   => 'no',
@@ -303,7 +304,7 @@ trait ContentControls {
 					'description' => sprintf(
 					/* translators: %s is a uri param */
 						esc_html__( 'לדוגמה: http://yourpage.com/pagename?%s=value', 'responder' ),
-						$section_field['uri_param']
+						PluginHelpers::safeUriParam( $section_field['uri_param'] )
 					),
 					'condition'   => array(
 						'is_hidden_field_' . $section_field['id'] => 'yes',

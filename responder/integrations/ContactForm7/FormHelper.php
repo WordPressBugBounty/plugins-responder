@@ -118,6 +118,7 @@ class FormHelper {
 			'list'                => PluginHelpers::getVal( $this->form_settings, 'list', 0 ),
 			'onexisting_joindate' => PluginHelpers::getVal( $this->form_settings, 'onexisting_joindate' ),
 			'onexisting_rejoin'   => PluginHelpers::getVal( $this->form_settings, 'onexisting_rejoin' ),
+			'onexisting_sms'      => PluginHelpers::getVal( $this->form_settings, 'onexisting_sms' ),
 			'onexisting'          => PluginHelpers::getVal( $this->form_settings, 'action_on_existing' ),
 			'pass_params'         => PluginHelpers::getVal( $this->form_settings, 'thank_you_params' ),
 			'tags'                => PluginHelpers::getVal( $this->form_settings, 'tags', array() ),

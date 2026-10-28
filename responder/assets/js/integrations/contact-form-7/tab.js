@@ -47,7 +47,7 @@
           $cf7Form
             .find('[name="tags"]')
               .prop('value', '').parents('.responder-form-row').addClass('hidden').end().end()
-            .find('[name="onexisting_rejoin"], [name="onexisting_joindate"]')
+            .find('[name="onexisting_rejoin"], [name="onexisting_joindate"], [name="onexisting_sms"]')
               .prop('checked', false).parents('.responder-form-row').addClass('hidden').end().end()
             .find('[name="action_on_existing"]')
               .parents('.responder-form-row').removeClass('hidden').end().end();
@@ -57,7 +57,7 @@
           $cf7Form
             .find('[name="action_on_existing"]')
               .prop('selectedIndex', 0).parents('.responder-form-row').addClass('hidden').end().end()
-            .find('[name="tags"], [name="onexisting_rejoin"], [name="onexisting_joindate"]')
+            .find('[name="tags"], [name="onexisting_rejoin"], [name="onexisting_joindate"], [name="onexisting_sms"]')
               .parents('.responder-form-row').removeClass('hidden').end().end();
 
           $.RMP_AJAX('getSubscribersTags')
@@ -74,9 +74,14 @@
       // Disable submit button
       $submitButton.attr('disabled', true);
 
+      $.RMP_AJAX.hideNotConnected($subscribersList);
+
       $.RMP_AJAX('getListsBySystemName', { system_name: chosenSystem })
         .done(function (lists) {
           renderSubscribersLists(lists, $subscribersList);
+        })
+        .fail(function (xhr, status, errorData) {
+          $.RMP_AJAX.showNotConnected($subscribersList, status, errorData); // PR1-I28
         });
     }
 
@@ -322,7 +327,7 @@
           fieldRowTemplate
             .replace(/{{ fieldId }}/g, field.id)
             .replace('{{ fieldName }}', field.name)
-            .replace('{{ uriParam }}', field.uri_param)
+            .replace('{{ uriParam }}', field.uri_param === 'name' ? 'full_name' : field.uri_param)
         );
 
         if (isNaN(field.id)) {

@@ -94,7 +94,21 @@ class SettingsPage {
 			}
 		}
 
+		$was_connected = ! empty( API::getConnectedSystemsNames() );
+
 		PluginOptionsManager::run()->updateOptions( $settings );
+
+		// PR1-I19: while no system is connected the Elementor widgets are not registered, and Elementor caches
+		// the pages without the forms (24 h by default) - e.g. after Delete -> reinstall. Show them again at once.
+		if ( ! $was_connected && ! empty( API::getConnectedSystemsNames() ) ) {
+			self::clearElementorCache();
+		}
+	}
+
+	private static function clearElementorCache() {
+		if ( class_exists( '\Elementor\Plugin' ) && isset( \Elementor\Plugin::$instance->files_manager ) ) {
+			\Elementor\Plugin::$instance->files_manager->clear_cache();
+		}
 	}
 
 	private static function saveSettings() {

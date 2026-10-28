@@ -279,9 +279,23 @@ jQuery(window).on('elementor:init', function () {
             _nonce: this.model.get('_nonuce')
           },
           success: function (lists) {
+            var $box = this.$el.find('.subscribers-list-box');
+
+            $box.find('.rmp-system-not-connected').remove();
+            this.removeControlSpinner('.subscribers-list-box');
+
+            // PR1-I28: the system in "בחירת מערכת" is not connected - say so instead of an empty / broken list.
+            if (lists && lists.success === false) {
+              if (lists.data && lists.data.message) {
+                jQuery('<p class="rmp-system-not-connected elementor-control-field-description" style="color:#d63638"></p>')
+                  .text(lists.data.message)
+                  .appendTo($box);
+              }
+              return;
+            }
+
             fieldsMapCache[cachedActionName] = lists;
             this.renderLists(lists);
-            this.removeControlSpinner('.subscribers-list-box');
           }.bind(this)
         });
       }
@@ -339,6 +353,14 @@ jQuery(window).on('elementor:init', function () {
           },
           success: function (personalFields) {
             var fieldsMap = [];
+
+            // PR1-I28: system not connected - no fields to match (the list box shows the message).
+            if (personalFields && personalFields.success === false) {
+              this.removeControlSpinner('.fields-map-box');
+              this.hideFieldsMap();
+              return;
+            }
+
             fieldsMapCache[cachedActionName] = personalFields;
 
             fieldsMap = this.createFieldsMap(

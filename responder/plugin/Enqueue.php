@@ -28,8 +28,16 @@ class Enqueue {
 		}
 	}
 
-	public static function ajaxEnqueue() {
-		wp_enqueue_script(
+	/**
+	 * PR1-I16: register ajax.js and its settings (AJAX URL + nonce) without loading them. They are printed
+	 * only on pages whose scripts depend on 'rmp-ajax-js' (e.g. the Elementor widget form), not on every page.
+	 */
+	public static function ajaxRegister() {
+		if ( wp_script_is( 'rmp-ajax-js', 'registered' ) ) {
+			return;
+		}
+
+		wp_register_script(
 			'rmp-ajax-js',
 			self::$ASSETS_URL . '/js/ajax.js',
 			array( 'jquery', 'underscore' ),
@@ -47,8 +55,14 @@ class Enqueue {
 		);
 	}
 
+	public static function ajaxEnqueue() {
+		self::ajaxRegister();
+		wp_enqueue_script( 'rmp-ajax-js' );
+	}
+
+	// PR1-I16: front end - register only; each form type loads what it needs when a form is on the page.
 	public static function frontEnqueue() {
-		self::ajaxEnqueue();
+		self::ajaxRegister();
 	}
 
 	public static function register() {

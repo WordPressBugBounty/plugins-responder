@@ -33,15 +33,9 @@ jQuery(window).on("elementor:init", function () {
 			}
 		},
 
-		// Show Video tutorial link only for responder live system.
+		// Help link (KB article) is shown for both systems (PR1-I5).
 		toggleTutorialLink: function() {
-			var $tutorialLink = this.$el.find('.elementor-control-field-tutorial-link');
-
-			if ('responder_live' === this.$systemChoiceSelect.val()) {
-				$tutorialLink.show();
-			} else {
-				$tutorialLink.hide();
-			}
+			this.$el.find('.elementor-control-field-tutorial-link').show();
 		}
 	});
 

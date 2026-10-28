@@ -84,7 +84,8 @@ class FieldsParser {
 	}
 
 	private static function parsePhoneField( $value = '' ) {
-		return preg_replace( self::INVALID_PHONE_NUMER_REGEX, '', $value );
+		// Digits only, and +972 / 00972 → 0, so "+972541234567" is stored as "0541234567" (PR1-I8).
+		return PluginHelpers::normalizePhone( $value );
 	}
 
 	private static function parseTextField( $value = '' ) {
@@ -92,9 +93,8 @@ class FieldsParser {
 			$value = implode( ',', $value );
 		}
 
-		$value = stripslashes( $value );
-
-		return $value;
+		// No stripslashes() - values arrive unslashed; it removed a backslash the visitor typed (PR1-I11).
+		return (string) $value;
 	}
 
 	private function setDefaultFields( $subscriber_details = array() ) {

@@ -51,7 +51,7 @@ class DataManager {
 				'onexisting' => $on_existing,
 			);
 
-			PluginAPI::run( 'responder' )->createSubscriber( $subscriber_details );
+			PluginAPI::run( 'responder' )->submitSubscriber( $subscriber_details, array( 'integration' => 'Pojo Forms', 'form' => '#' . $post_id ) );
 		}
 	}
 

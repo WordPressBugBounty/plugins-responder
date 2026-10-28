@@ -38,5 +38,6 @@ class Main {
 		Settings::register();
 		SettingsPage::register();
 		Debugger::register();
+		SubmissionFailures::register();
 	}
 }

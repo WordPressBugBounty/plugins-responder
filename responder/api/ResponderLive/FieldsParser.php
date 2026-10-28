@@ -50,6 +50,11 @@ class FieldsParser {
 	public static function parseMultichoiceField( $value = array() ) {
 		$parsed_value = array();
 
+		// An unticked Checkbox arrives as '' (was a PHP warning in foreach - PR1-I13), one answer as a scalar.
+		if ( ! is_array( $value ) ) {
+			$value = ( '' === $value || null === $value ) ? array() : array( $value );
+		}
+
 		foreach ( $value as $number ) {
 			$parsed_value[] = (int) $number;
 		}
@@ -82,11 +87,14 @@ class FieldsParser {
 	}
 
 	private static function parsePhoneField( $value = '' ) {
-		return preg_replace( self::INVALID_PHONE_NUMER_REGEX, '', $value );
+		// Digits only, and +972 / 00972 → 0, so "+972541234567" is stored as "0541234567" (PR1-I8).
+		return PluginHelpers::normalizePhone( $value );
 	}
 
 	private static function parseTextField( $value = '' ) {
-		return stripslashes( $value );
+		// Values arrive as the visitor typed them (CF7, Elementor Pro, and the widget after wp_unslash in AJAX.php).
+		// No stripslashes() here - it removed a backslash the visitor typed (PR1-I11).
+		return (string) $value;
 	}
 
 	private function setDefaultFields( $subscriber_details = array() ) {
@@ -104,9 +112,13 @@ class FieldsParser {
 			}
 		}
 
+		// Filling in a form is a (re-)subscription: a contact who unsubscribed becomes active
+		// again, whatever the existing-contact options say (PR1-I7).
+		$this->fields['unsubscribed'] = false;
+
+		// "אם הנמען קיים, להחליף את הפרטים הקיימים" only controls overwriting the details.
 		if ( PluginHelpers::ifExistsAndEqual( $subscriber_details, 'onexisting_rejoin', 'rejoin' ) ) {
-			$this->fields['unsubscribed'] = false;
-			$this->fields['override']     = true;
+			$this->fields['override'] = true;
 		}
 	}
 

@@ -2,56 +2,74 @@
 Contributors: idangoldman, responderproducts, matiskiba
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 License: GPLv3
-Requires at least: 4.7
+Requires at least: 6.8
 Requires PHP: 7.4
-Stable tag: 4.4.4
-Tags: Rav Messer, Responder
-Tested up to: 6.8
+Stable tag: 4.4.5
+Tags: rav messer, responder, elementor, contact form 7, email marketing
+Tested up to: 7.1
 
 Integration between Rav Messer and WordPress.
 
 == Description ==
 
-**NOTE: This plugin is for RAV MESSER users only.**
+**NOTE: This plugin is for Rav Messer users only.**
 
-The Rav Messer plugin provides its user with a simple and easy way to integrate their Rav Messer account with the popular plugins - Elementor, Contact form 7 & Pojo forms.
-Every new subscriber on your WordPress site will automatically be transferred to a list you select in your Rav Messer account.
-This simple integration will upgrade your email marketing activity by sending only relevant and personalized messages to your prospects.
-Our support team will be happy to help with any inquiry.
+The Rav Messer plugin connects the forms on your WordPress site to your Rav Messer account. Every new subscriber is added automatically to the Rav Messer list you choose, so you can send them relevant, personalized messages.
 
-Email: support@responder.co.il
-Phone: 03-717-7777
-Sunday - Thursday: 09:00-20:00
-Friday & Holiday Eve: 08:00-12:00
+Works with:
 
+* Contact Form 7
+* Elementor (free)
+* Elementor Pro
+
+Full step-by-step guide: [Rav Messer forms plugin for WordPress](https://support.responder.co.il/portal/he/kb/articles/%D7%AA%D7%95%D7%A1%D7%A3-%D7%94%D7%98%D7%A4%D7%A1%D7%99%D7%9D-%D7%A9%D7%9C-%D7%A8%D7%91-%D7%9E%D7%A1%D7%A8-%D7%9C-wordpress)
+
+= Support =
+
+* Email: support@responder.co.il
+* Phone: 03-717-7777
+* Sunday – Thursday: 09:00–18:00
+* Friday & holiday eves: 08:00–12:00
 
 == Installation ==
 
-Note: Please make sure your form plugin is already installed on your WordPress site.
-Install Responder plugin using the WordPress built-in Plugin installer > Add New
-Activate the plugin through the 'Plugins' menu in WordPress
-Ask the Rav Messer support team to send you the Key & secret password for responder WordPress form plugin.
-Copy & paste the key & secret password you got into your responder plugin under the  הגדרות רב מסר tab
-Once you successfully integrate with your Rav Messer account you can start creating new & smart forms.
-Enjoy!
+1. Make sure your form plugin (Contact Form 7, Elementor or Elementor Pro) is installed and active.
+2. In WordPress go to Plugins → Add New, search for "Rav Messer", then install and activate the plugin.
+3. In Rav Messer, click the gear icon (Settings) → "חיבורים חיצוניים", find "וורדפרס – תוסף טפסים", switch it on and copy the Token.
+4. In WordPress open "רב מסר - תוסף טפסים" → tab "חיבור לרב מסר", paste the Token and click Save. A green message confirms the connection.
+5. Create your forms in the "Contact Form 7" or "טפסים לאלמנטור" tab, or add the "רב מסר" action under Actions After Submit in an Elementor Pro form.
 
+Still on the legacy system (רב מסר הישנה)? Use the key & secret in the "חיבור לרב מסר הישנה" section of the same tab.
+
+Step-by-step guide with screenshots: [Rav Messer forms plugin for WordPress](https://support.responder.co.il/portal/he/kb/articles/%D7%AA%D7%95%D7%A1%D7%A3-%D7%94%D7%98%D7%A4%D7%A1%D7%99%D7%9D-%D7%A9%D7%9C-%D7%A8%D7%91-%D7%9E%D7%A1%D7%A8-%D7%9C-wordpress)
 
 == Screenshots ==
 
-1. לפני שמתחילים- הסבר על התוסף והאפשרויות הקיימות
-2. חיבור התוסף לחשבון רב מסר
-3. קבלת הודעת אישור שיש תקשורת עם חשבון רב מסר
-4. הגדרת טופס לתוסף Contact form 7
-5. הטופס נוצר ב-Contact form 7
-6. הגדרת טופס לתוסף ל-Pojo Forms
-7. הטופס נוצר ב- Pojo Forms
-8. יצירת טופס לאלמנטור
-9. עיצוב ועריכה של הטופס באלמנטור
-10. ניהול טפסים של אלמנטור בפלאגין רב מסר
-11. לשונית נמענים - צפייה בנמענים ברשימה הנבחרת
-
+1. לפני שמתחילים – הסבר על התוסף ועל תוספי הטפסים שהוא תומך בהם
+2. חיבור לרב מסר – הדבקת ה-Token
+3. הודעת אישור על חיבור מוצלח לרב מסר
+4. יצירת טופס ל-Contact Form 7 ובחירת רשימה
+5. הטופס שנוצר ב-Contact Form 7
+6. יצירת טופס לאלמנטור (גרסה חינמית)
+7. אלמנטור פרו – פעולת “רב מסר” ב-Actions After Submit
+8. לשונית נמענים – צפייה ברשימות ובנמענים
 
 == Changelog ==
+
+= 4.4.5 =
+* New "Getting started" tab, a clearer "Connection" tab (masked credentials, clear error messages) and a footer with the support details.
+* System names: "רב מסר" (current, listed first and pre-selected) and "רב מסר הישנה" (legacy).
+* PHP 8.2 – 8.5 support (no "Deprecated" notices).
+* A submission that does not reach Rav Messer now shows the visitor an error instead of "sent successfully"; the lead is kept in Responder Debug and the site admin gets a notice and one email a day.
+* רב מסר: a contact who unsubscribed is subscribed again when filling in a form; new option to turn SMS back on for contacts who unsubscribed from SMS.
+* Phone numbers: Israeli numbers with dashes, spaces or +972 are accepted and saved as digits.
+* Thank-you page: the form fields are passed correctly; on the same site the name is sent as "full_name" (fixes "Page not found").
+* Elementor widget: "רוחב עמודה" works; forms with no list or deleted forms no longer fail silently; requests must come from the page.
+* Elementor Pro: the form's system is always saved; choice fields are matched to list options by name.
+* Contact Form 7 panel: no automatic list selection; the saved list and options show right away.
+* "נמענים" tab: large lists load page by page, the search runs in Rav Messer, new status column, CSV / Excel export with Hebrew.
+* Responder Debug log is open to administrators only. Deleting the plugin removes the saved connection details.
+* Requires WordPress 6.8 or higher and PHP 7.4 or higher. Tested up to WordPress 7.1.
 
 = 4.4.4 =
 * Support for CF7 v6.1 and higher.

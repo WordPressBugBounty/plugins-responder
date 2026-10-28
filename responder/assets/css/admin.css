@@ -2024,16 +2024,6 @@ table.unite_table_settings_wide .setting_onecell_text {
 	margin-bottom: 5px !important;
 }
 
-.plugin_footer i {
-	margin-left: 10px;
-	vertical-align: middle;
-}
-
-.plugin_footer span {
-	padding: 20px;
-	display: inline-block;
-	vertical-align: middle;
-}
 
 #wpbody-content h1 {
 	direction: rtl;
@@ -2123,20 +2113,66 @@ table.dataTable tfoot th {
 	text-align: right;
 }
 
-.plugin_footer {
-	background: #f7f7ff;
-	padding: 20px;
-	margin: 0 auto;
-	display: table;
+/* PR1-I29: footer like the רב מסר app (logo, phone, email, WhatsApp, hours on one line). */
+.plugin_footer.rmp-footer {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: center;
+	gap: 12px 40px;
+	margin: 30px 0 0;
+	padding: 18px 20px;
+	background: #fff;
+	border-top: 1px solid rgba(0, 0, 0, 0.1);
+	color: #3f4140;
+	font-size: 15px;
+	line-height: 1.4;
+	direction: rtl;
 }
 
-.responder-footer-times {
-	padding: 0px !important;
+.rmp-footer .rmp-footer-item {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	white-space: nowrap;
 }
 
-.responder-footer-times p {
-	padding: 0px !important;
-	margin: 0px !important;
+.rmp-footer .rmp-footer-item i {
+	color: #c7c7c7;
+	font-size: 16px;
+	margin: 0;
+}
+
+.rmp-footer .rmp-footer-item a {
+	color: #026cfe;
+	text-decoration: underline;
+}
+
+.rmp-footer .rmp-footer-item a:hover,
+.rmp-footer .rmp-footer-item a:focus {
+	color: #0050c8;
+}
+
+.rmp-footer .rmp-footer-logo {
+	font-size: 24px;
+	font-weight: 700;
+	letter-spacing: -0.5px;
+	white-space: nowrap;
+}
+
+.rmp-footer .rmp-footer-logo-rav {
+	color: #1381e5;
+	margin-left: 4px;
+}
+
+.rmp-footer .rmp-footer-logo-meser {
+	color: #101143;
+}
+
+@media (max-width: 782px) {
+	.rmp-footer .rmp-footer-hours {
+		white-space: normal;
+	}
 }
 
 table.plugin-options-table {
@@ -2218,8 +2254,9 @@ iframe#res_reg::-webkit-scrollbar {
 	text-align: left;
 }
 
+/* PR1-I17: the total sits on the right, with the list picker and the note (RTL page). */
 div#rmp-subscribers-table-wrap .total-count {
-	text-align: left;
+	text-align: right;
 }
 
 div#rmp-subscribers-table-wrap table {
@@ -2327,4 +2364,21 @@ div#rmp-subscribers-table-wrap th {
 .fields-table-warning {
 	display: none;
 	color: red;
+}
+
+/* PR1-I32: Elementor form saved without a list */
+.rmp-no-list-message {
+	margin: 10px 0;
+}
+
+.rmp-no-list th {
+	color: #d63638;
+}
+
+.rmp-no-list select,
+.rmp-no-list .select2-selection,
+.rmp-no-list .chosen-single,
+.rmp-no-list .unite-select-wrapper {
+	border-color: #d63638 !important;
+	box-shadow: 0 0 0 1px #d63638;
 }

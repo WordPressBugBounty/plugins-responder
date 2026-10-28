@@ -1,56 +1,46 @@
 <?php
-  $advanced_tab_link             = RavMesser\Plugin\SettingsPage::getUrl( '&showadvanced=true#plugin_config-advanced' );
-  $rav_messer_blog_link          = 'https://www.responder.co.il/blog/';
-  $responder_live_enable_url     = RavMesser\Plugin\SettingsPage::getUrl( '#plugin_config-2' );
-  $responder_live_is_not_enabled = ! RavMesser\Plugin\API::isResponderLiveEnabled();
+  $rav_messer_kb_link = 'https://support.responder.co.il/portal/he/kb/articles/%D7%AA%D7%95%D7%A1%D7%A3-%D7%94%D7%98%D7%A4%D7%A1%D7%99%D7%9D-%D7%A9%D7%9C-%D7%A8%D7%91-%D7%9E%D7%A1%D7%A8-%D7%9C-wordpress';
 ?>
 
 <h1>לפני שמתחילים</h1>
 
 <div class="responder-instructions-text">
 
-  <p><span>תוסף רב מסר לוורדפרס מאפשר לכם חיבור פשוט וקל בין טופסי האתר לרשימות ברב מסר. הוא עובד עם כמה תוספים פופולריים:</span></p>
+  <p>תוסף רב מסר לוורדפרס מאפשר לכם חיבור פשוט וקל בין טופסי האתר לרשימות ברב מסר.</p>
+
+  <p>התוסף עובד עם תוספי הטפסים:</p>
 
   <ul>
-	<li><span>Contact Form 7</span></li>
-	<li><span>Pojo Forms</span></li>
-	<li><span>אלמנטור – הגרסה החינמית</span></li>
-	<li><span>אלמנטור פרו</span></li>
+	<li>Contact Form 7</li>
+	<li>אלמנטור – הגרסה החינמית</li>
+	<li>אלמנטור פרו</li>
   </ul>
 
   <h2><b>איך זה עובד?</b></h2>
 
-  <p><span>תוסף רב מסר מעביר את הנמענים בטפסים באתר שלכם לרשימות לבחירתכם ברב מסר.</span></p>
+  <p>תוסף רב מסר מעביר את הנמענים שנרשמים בטפסים באתר שלכם לרשימות לבחירתכם ברב מסר.</p>
 
   <h2><b>לפני הכול:</b></h2>
 
   <ol>
-	<li><span>ודאו שהתוספים מותקנים אצלכם באתר. לדוגמה, אם תרצו לחבר בין אלמנטור לרב מסר, ודאו קודם כול שכבר התקנתם את אלמנטור באתר שלכם.</span></li>
-	<li><span>בקשו מצוות התמיכה של רב מסר אסימונים (טוקנים) שיאפשרו את החיבור המאובטח בין אתר הוורדפרס לבין מערכת רב מסר. אתם מוזמנים לפנות במייל או בטלפון – הפרטים ושעות הפעילות מופיעים כאן למטה.</span></li>
+	<li>ודאו שתוסף הטפסים שתרצו לחבר מותקן באתר. לדוגמה, כדי לחבר טופס של אלמנטור – ודאו קודם שאלמנטור מותקן.</li>
+	<li>העתיקו את ה-Token מרב מסר: במערכת רב מסר לחצו על גלגל השיניים (הגדרות) ← “חיבורים חיצוניים”, אתרו את החיבור “וורדפרס – תוסף טפסים”, הפעילו אותו במתג והעתיקו את ה-Token בלחיצה על סמלון ההעתקה.</li>
+	<li>הדביקו את ה-Token בלשונית <b>חיבור לרב מסר</b> ולחצו על “שמירה”. ודאו שמופיעה הודעה ירוקה שהחיבור הצליח.</li>
   </ol>
 
-  <p><span>לאחר שתקבלו את פרטי האסימונים (קוד מפתח וקוד סוד) הכניסו אותם ב</span><b>לשונית חיבור לרב מסר </b><span>בתוסף.</span></p>
-  <p><span>חשבון הרב מסר שלכם מחובר? מיד ייפתחו גם הלשוניות Pojo Forms, Contact form 7, טפסים לאלמנטור ונמענים.</span></p>
-  <p><span>ב</span><b>לשונית Contact Form 7 ו-Pojo Forms </b><span>תוכלו ליצור טפסים לתוספים ולבחור לאיזו רשימה ברב מסר לקשר אותם. אחר כך תגדירו את פרטי הטופס ולבסוף תועברו לממשק תוסף הטפסים שבחרתם, שם תשלימו את ההגדרות. מכאן והלאה כל שינוי בטופס קיים יתבצע מתוסף הטפסים עצמו, ולא מתוסף רב מסר.</span></p>
-  <p><span>ב</span><b>לשונית טפסים לאלמנטור</b><span> תוכלו ליצור טפסים לשימוש בתוסף אלמנטור- הגרסה החינמית. לאחר יצירת הטופס פה תוכלו למצוא את הטופס בתפריט הראשי של אלמנטור למטה באיזור שנקרא- רב מסר.</span></p>
-  <p><span>ב</span><b>לשונית נמענים</b><span> תוכלו לצפות בכל פרטי הנמענים שלכם ברשימות רב מסר.</span></p>
-  <p><span>החיבור</span><b> לאלמנטור פרו</b><span> מתבצע בתוך הגדרות הטופס של אלמנטור, הוסיפו את Responder להגדרות של Actions After Submit בטופס הרלוונטי.</span></p>
-  <p><span>מידע מפורט על אופן השימוש בתוסף רב מסר לוורדפרס תוכלו למצוא </span><a href="<?php echo esc_url( $rav_messer_blog_link ); ?>" target="_blank"><span>בבלוג של רב מסר</span></a></p>
-  <p><span>צוות התמיכה של רב מסר ישמח לסייע לכם בכל שאלה, ומאחל לכם הצלחה בשימוש בתוסף של רב מסר!</span></p>
-  <p><span>למעבר ללשונית הגדרות מתקדמות </span><a href="<?php echo esc_url( $advanced_tab_link ); ?>">לחצו כאן</a></p>
+  <p><b>אחרי החיבור</b> יופיעו לשוניות לפי תוספי הטפסים שמותקנים באתר:</p>
 
-  <?php if ( $responder_live_is_not_enabled ) : ?>
-	<form id="rmp-responder-live-enable-form" method="post" action="<?php echo esc_url( $responder_live_enable_url ); ?>">
-    <?php wp_nonce_field('responder_settings', 'responder_nonce'); ?>
-		<?php settings_fields( RAV_MESSER_OPTIONS_GROUP ); ?>
-	  <input type="hidden" name="rmp_action" value="connection_settings" />
-	  <input type="hidden" name="responder[responder_live_enabled]" value="true" />
+  <ul>
+	<li><b>Contact Form 7</b> – יוצרים טופס חדש, בוחרים לאיזו רשימה ברב מסר הנמענים ייכנסו ואילו שדות יופיעו. הטופס נוצר ב-Contact Form 7, ומשם ממשיכים לערוך אותו.</li>
+	<li><b>טפסים לאלמנטור</b> (גרסה חינמית) – יוצרים טופס ומחברים אותו לרשימה. הטופס יופיע בעורך של אלמנטור, בקטגוריה “רב מסר”, ואפשר לגרור אותו לכל עמוד.</li>
+	<li><b>אלמנטור פרו</b> – אין צורך ליצור טופס כאן. בעורך של אלמנטור פותחים את הגדרות הטופס, מוסיפים את <b>רב מסר</b> ל-Actions After Submit ובוחרים רשימה.</li>
+	<li><b>נמענים</b> – צפייה ברשימות ובנמענים שלכם ברב מסר.</li>
+  </ul>
 
-	  <p>
-		<?php esc_html_e( 'חיבור התוסף למערכת החדשה בלחיצה', 'responder' ); ?><button type="submit">
-		  <?php esc_html_e( 'כאן', 'responder' ); ?>
-		</button>
-	  </p>
-	</form>
-  <?php endif ?>
+  <div class="responder-callout">
+	<b>מדריך מלא לתוסף</b> – כל השלבים, עם צילומי מסך, במרכז הידע של רב מסר: <a href="<?php echo esc_url( $rav_messer_kb_link ); ?>" target="_blank" rel="noopener">לחצו כאן</a>
+  </div>
+
+  <p>צוות התמיכה של רב מסר ישמח לסייע לכם בכל שאלה, ומאחל לכם הצלחה בשימוש בתוסף!</p>
+
 </div>

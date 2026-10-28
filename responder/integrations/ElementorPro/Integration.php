@@ -9,6 +9,7 @@ use RavMesser\Integrations\ElementorPro\Controls\FieldsMap as FieldsMapControl;
 use RavMesser\Integrations\ElementorPro\Controls\SystemChoice as SystemChoiceControl;
 use RavMesser\Integrations\ElementorPro\Controls\Tags as TagsControl;
 use RavMesser\Integrations\ElementorPro\ActionAfterSubmit;
+use RavMesser\Integrations\ElementorPro\FieldsHelper;
 
 class Integration {
 
@@ -22,6 +23,9 @@ class Integration {
 
 	public static function register() {
 		add_action( 'elementor_pro/init', array( __CLASS__, 'registerActionAfterSubmit' ) );
+
+		// PR1-I25: always save the form's system (Elementor drops a value equal to the control default).
+		add_filter( 'elementor/document/save/data', array( FieldsHelper::class, 'addSystemChoiceOnSave' ), 10, 2 );
 
 		if ( IntegrationVersion::isGreaterOrEqualTo( 'elementor', '3.5.0' ) ) {
 			add_action( 'elementor/controls/register', array( __CLASS__, 'registerControls' ) );

@@ -7,6 +7,7 @@ use ElementorPro\Modules\Forms\Classes\Action_Base as ElementorProActionBase;
 use RavMesser\Plugin\API as PluginAPI;
 use RavMesser\Integrations\ElementorPro\FieldsHelper;
 use RavMesser\Plugin\Helpers as PluginHelpers;
+use RavMesser\Plugin\SubmissionFailures;
 
 class ActionAfterSubmit extends ElementorProActionBase {
 
@@ -25,6 +26,7 @@ class ActionAfterSubmit extends ElementorProActionBase {
 			$element['responder_live_tags'],
 			$element['responder_live_onexisting_rejoin'],
 			$element['responder_live_onexisting_joindate'],
+			$element['responder_live_onexisting_sms'],
 			$element['responder_fields_map']
 		);
 	}
@@ -59,14 +61,31 @@ class ActionAfterSubmit extends ElementorProActionBase {
 			PluginHelpers::getVal( $form_settings, 'responder_fields_map' )
 		);
 
+		// PR1-I25: a form saved without "בחירת מערכת" gets today's default from Elementor, which changes when a
+		// system is connected / disconnected. Send to the system that holds the form's list instead.
+		$saved_settings = FieldsHelper::getSavedFormSettings(
+			PluginHelpers::getPostGetVariable( 'post_id', PluginHelpers::SANITIZE_ID ),
+			PluginHelpers::getVal( $form_settings, 'id', '' )
+		);
+
+		if ( is_array( $saved_settings ) && empty( $saved_settings['responder_system_choice'] ) && ! empty( $fields_map['list_id'] ) ) {
+			$chosen_system = FieldsHelper::resolveSystemForList( $fields_map['list_id'], $chosen_system );
+		}
+
 		if ( ! empty( $chosen_system ) && FieldsHelper::validateFieldsMap( $fields_map ) ) {
+			$unmatched_options  = array();
 			$subscriber_details = array(
 				'list_id' => $fields_map['list_id'],
 				'fields'  => FieldsHelper::formatFormFieldsByFieldsMap(
 					$chosen_system,
 					$form_fields,
-					$fields_map
+					$fields_map,
+					$unmatched_options
 				),
+			);
+			$context            = array(
+				'integration' => 'Elementor Pro',
+				'form'        => trim( PluginHelpers::getVal( $form_settings, 'form_name', '' ) . ' (' . PluginHelpers::getVal( $form_settings, 'id', '' ) . ')' ),
 			);
 
 			switch ( $chosen_system ) {
@@ -79,10 +98,28 @@ class ActionAfterSubmit extends ElementorProActionBase {
 					);
 					$subscriber_details['onexisting_rejoin']   = PluginHelpers::getVal( $form_settings, 'responder_live_onexisting_rejoin' );
 					$subscriber_details['onexisting_joindate'] = PluginHelpers::getVal( $form_settings, 'responder_live_onexisting_joindate' );
+					$subscriber_details['onexisting_sms']      = PluginHelpers::getVal( $form_settings, 'responder_live_onexisting_sms' );
 					break;
 			}
 
-			PluginAPI::run( $chosen_system )->createSubscriber( $subscriber_details );
+			$api = PluginAPI::run( $chosen_system );
+
+			// PR1-I10: the lead did not reach רב מסר - Elementor shows the error to the visitor
+			// (and the technical reason to a logged-in admin); the form's other actions still run.
+			$sent = $api->submitSubscriber( $subscriber_details, $context );
+
+			// PR1-I13: answers that match no option of the list field were not sent - keep them in Responder Debug.
+			if ( ! empty( $unmatched_options ) ) {
+				do_action( 'RMP_unmatched_choice_options', $chosen_system, $subscriber_details, $unmatched_options, $context );
+			}
+
+			if ( false === $sent ) {
+				$ajax_handler->add_error_message( SubmissionFailures::visitorMessage() );
+
+				if ( method_exists( $ajax_handler, 'add_admin_error_message' ) ) {
+					$ajax_handler->add_admin_error_message( 'רב מסר: ' . SubmissionFailures::errorToText( $api->getSubmitError() ) );
+				}
+			}
 		}
 	}
 
@@ -153,8 +190,23 @@ class ActionAfterSubmit extends ElementorProActionBase {
 				'type'         => ElementorControlsMananger::SWITCHER,
 				'label_on'     => esc_html__( 'כן', 'responder' ),
 				'label_off'    => esc_html__( 'לא', 'responder' ),
-				'separator'    => 'after',
 				'return_value' => 'joindate',
+				'condition'    => array(
+					'responder_system_choice' => 'responder_live',
+				),
+			)
+		);
+
+		// PR1-I30: turn SMS back on for an existing contact who unsubscribed from SMS (only when a phone is sent).
+		$widget->add_control(
+			'responder_live_onexisting_sms',
+			array(
+				'label'        => esc_html__( 'אם ביקש הסרה מ-SMS, להחזיר לקבלת SMS (רב מסר בלבד)', 'responder' ),
+				'type'         => ElementorControlsMananger::SWITCHER,
+				'label_on'     => esc_html__( 'כן', 'responder' ),
+				'label_off'    => esc_html__( 'לא', 'responder' ),
+				'separator'    => 'after',
+				'return_value' => 'sms',
 				'condition'    => array(
 					'responder_system_choice' => 'responder_live',
 				),
@@ -170,8 +222,8 @@ class ActionAfterSubmit extends ElementorProActionBase {
 				'label'       => esc_html__( 'בחירת מערכת', 'responder' ),
 				'label_block' => true,
 				'separator'   => 'after',
-				'tutorial_link'  => esc_url('https://www.youtube.com/watch?v=sqIMNKLB9Cs'),
-				'tutorial_link_text'  => esc_html__('צפייה בסרטון הדרכה', 'responder'),
+				'tutorial_link'      => esc_url( PluginAPI::getHelpLink() ),
+				'tutorial_link_text' => esc_html__( 'לפרטים נוספים לחצו כאן', 'responder' ),
 			)
 		);
 	}

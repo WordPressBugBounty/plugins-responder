@@ -8,14 +8,16 @@
   Text Domain: responder
   Domain Path: /languages
   License: GPLv3
-  Version: 4.4.4
-  Description: תוסף רב מסר מאפשר חיבור קל ופשוט עם התוספים הפופולארים- אלמנטור, אלמנטור פרו, Contact form 7 ו- Pojo Forms.
+  Requires at least: 6.8
+  Requires PHP: 7.4
+  Version: 4.4.5
+  Description: תוסף רב מסר מאפשר חיבור קל ופשוט עם התוספים הפופולריים – אלמנטור, אלמנטור פרו ו-Contact Form 7.
 הנמענים באתר הוורדפרס שלכם, שירשמו דרך הטפסים שתצרו, יועברו באופן אוטומטי לרשימה שתבחרו ברב מסר.
 חיבור זה ישדרג את מערך השיווק שלכם ויאפשר לכם לשלוח מסרים רלוונטיים לכל לקוח.
  */
 
 define( 'RAV_MESSER_MIN_PHP_VER', '7.4' );
-define( 'RAV_MESSER_VERSION', '4.4.4' );
+define( 'RAV_MESSER_VERSION', '4.4.5' );
 define( 'RAV_MESSER_MENU_SLUG', 'Responder_PluginSettings' );
 define( 'RAV_MESSER_OPTIONS_GROUP', 'Responder_Plugin-settings-group' );
 define( 'RAV_MESSER_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );

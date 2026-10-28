@@ -50,4 +50,5 @@ return array(
     'RavMesser\\Plugin\\OptionsManager' => $baseDir . '/plugin/OptionsManager.php',
     'RavMesser\\Plugin\\Settings' => $baseDir . '/plugin/Settings.php',
     'RavMesser\\Plugin\\SettingsPage' => $baseDir . '/plugin/SettingsPage.php',
+    'RavMesser\\Plugin\\SubmissionFailures' => $baseDir . '/plugin/SubmissionFailures.php',
 );

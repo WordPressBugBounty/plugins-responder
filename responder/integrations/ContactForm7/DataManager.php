@@ -46,12 +46,19 @@ class DataManager {
 	public static function createSubscriber( $form_id = '', $fields = array() ) {
 		$form_settings = self::getFormSettings( $form_id );
 
-		if ( empty( $form_settings ) ) {
-			return false;
+		// Not connected to רב מסר (no settings, or saved without a list): nothing to send, the form works as a plain CF7 form.
+		if ( empty( $form_settings ) || empty( PluginHelpers::getVal( $form_settings, 'list' ) ) ) {
+			return true;
 		}
 
-		$fields        = ContactForm7FormHelper::formatSubscriberFields( $fields, $form_settings );
 		$chosen_system = $form_settings['chosen_system'];
+
+		// PR1-I20: the old system has one name field - first + last name are sent as the name when "שם מלא" is empty.
+		if ( 'responder' === $chosen_system ) {
+			list( $fields, $form_settings ) = self::addNameFromFirstAndLast( $fields, $form_settings );
+		}
+
+		$fields = ContactForm7FormHelper::formatSubscriberFields( $fields, $form_settings );
 
 		$subscriber_details = array(
 			'list_id' => $form_settings['list'],
@@ -66,10 +73,71 @@ class DataManager {
 				$subscriber_details['tags']                = PluginHelpers::getVal( $form_settings, 'tags', array() );
 				$subscriber_details['onexisting_rejoin']   = PluginHelpers::getVal( $form_settings, 'onexisting_rejoin' );
 				$subscriber_details['onexisting_joindate'] = PluginHelpers::getVal( $form_settings, 'onexisting_joindate' );
+				$subscriber_details['onexisting_sms']      = PluginHelpers::getVal( $form_settings, 'onexisting_sms' );
 				break;
 		}
 
-		PluginAPI::run( $chosen_system )->createSubscriber( $subscriber_details );
+		// PR1-I10: false when the lead did not reach רב מסר (the visitor then gets an error).
+		return PluginAPI::run( $chosen_system )->submitSubscriber(
+			$subscriber_details,
+			array(
+				'integration' => 'Contact Form 7',
+				'form'        => '#' . $form_id,
+			)
+		);
+	}
+
+	/**
+	 * PR1-I20: רב מסר הישנה has only NAME. When "שם מלא" is not mapped or was left empty, and "שם פרטי" /
+	 * "שם משפחה" are mapped and filled, "<first> <last>" is sent as the name.
+	 *
+	 * @param array $fields        The submitted CF7 fields (field name => value).
+	 * @param array $form_settings The form's רב מסר settings.
+	 * @return array array( $fields, $form_settings ) - with the combined name when it applies.
+	 */
+	public static function addNameFromFirstAndLast( $fields = array(), $form_settings = array() ) {
+		$field_value = function ( $setting ) use ( $fields, $form_settings ) {
+			$field_name = trim( (string) PluginHelpers::getVal( $form_settings, $setting, '' ), '[] ' );
+			$value      = '' !== $field_name && isset( $fields[ $field_name ] ) ? $fields[ $field_name ] : '';
+			$value      = is_array( $value ) ? implode( ' ', $value ) : $value;
+
+			return is_scalar( $value ) ? trim( (string) $value ) : '';
+		};
+
+		if ( '' !== $field_value( 'name' ) ) {
+			return array( $fields, $form_settings );
+		}
+
+		$full_name = trim( $field_value( 'first' ) . ' ' . $field_value( 'last' ) );
+
+		if ( '' === $full_name ) {
+			return array( $fields, $form_settings );
+		}
+
+		$fields['rmp-full-name-from-first-last'] = $full_name;
+		$form_settings['name']                   = '[rmp-full-name-from-first-last]';
+
+		return array( $fields, $form_settings );
+	}
+
+	/**
+	 * True when the form has a רב מסר list saved in its panel. Reads the stored option only –
+	 * no API call, no write (used by the front-end phone check, PR1-I8).
+	 */
+	public static function isFormConnected( $form_id = '' ) {
+		if ( empty( $form_id ) ) {
+			return false;
+		}
+
+		$form_settings = PluginOptionsManager::run()->getOption( self::OPTION_PREFIX . $form_id, array() );
+
+		if ( empty( $form_settings ) ) {
+			return false;
+		}
+
+		$form_settings = PluginHelpers::jsonDecode( $form_settings );
+
+		return ! empty( PluginHelpers::getVal( $form_settings, 'list' ) );
 	}
 
 	public static function getFormSettings( $form_id = '' ) {

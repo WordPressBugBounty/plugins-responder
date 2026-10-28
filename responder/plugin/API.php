@@ -36,10 +36,46 @@ class API {
 		return $systems_names;
 	}
 
-	public static function isResponderLiveEnabled() {
-		$responder_live_enabled = PluginOptionsManager::run()->getOption( 'responder_live_enabled' );
+	/**
+	 * Systems in display order: the current system (רב מסר) first, the old one (רב מסר הישנה) second.
+	 * Display only - getConnectedSystemsNames() keeps its order, because it decides the default
+	 * of forms that never stored a system (see PR1-I5 / PR1-I25).
+	 */
+	public static function getDisplaySystemsNames() {
+		$systems_names = self::getConnectedSystemsNames();
+		usort(
+			$systems_names,
+			function ( $a, $b ) {
+				return ( 'responder_live' === $b ) - ( 'responder_live' === $a );
+			}
+		);
 
-		return $responder_live_enabled === 'true';
+		return $systems_names;
+	}
+
+	/**
+	 * Pre-selected system for NEW forms: the current system when connected.
+	 */
+	public static function getPreferredSystemName() {
+		$systems_names = self::getDisplaySystemsNames();
+
+		return isset( $systems_names[0] ) ? $systems_names[0] : '';
+	}
+
+	/**
+	 * Help article for the plugin (no section anchor - KB heading IDs change when the article is edited).
+	 */
+	public static function getHelpLink() {
+		return 'https://support.responder.co.il/portal/he/kb/articles/%D7%AA%D7%95%D7%A1%D7%A3-%D7%94%D7%98%D7%A4%D7%A1%D7%99%D7%9D-%D7%A9%D7%9C-%D7%A8%D7%91-%D7%9E%D7%A1%D7%A8-%D7%9C-wordpress';
+	}
+
+	/**
+	 * The current system (רב מסר) is always available. The old "responder_live_enabled"
+	 * option (set by the removed "חיבור התוסף למערכת החדשה" button) is no longer needed;
+	 * it is kept registered so existing sites are not affected.
+	 */
+	public static function isResponderLiveEnabled() {
+		return true;
 	}
 
 	public static function notValidSystemsAuth() {

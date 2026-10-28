@@ -60,15 +60,21 @@ class Integration {
 		);
 	}
 
+	/**
+	 * PR1-I16: register only. Elementor loads them (and ajax.js + the nonce, a dependency) on pages that have
+	 * a רב מסר widget form, through FormWidget::get_script_depends() / get_style_depends().
+	 */
 	public static function registerWidgetFrontendEnqueue() {
-		wp_enqueue_style(
+		PluginEnqueue::ajaxRegister();
+
+		wp_register_style(
 			'rmp-elementor-form-widget-css',
 			PluginEnqueue::$ASSETS_URL . '/css/integrations/elementor/form-widget.css',
 			array(),
 			RAV_MESSER_VERSION
 		);
 
-		wp_enqueue_script(
+		wp_register_script(
 			'rmp-elementor-form-widget-js',
 			PluginEnqueue::$ASSETS_URL . '/js/integrations/elementor/form-widget.js',
 			array( 'jquery', 'rmp-ajax-js' ),

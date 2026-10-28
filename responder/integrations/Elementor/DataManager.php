@@ -12,6 +12,12 @@ class DataManager {
 
 	public static function createSubscriber( $fields = array(), $form_id = '' ) {
 		$form_settings = self::getFormSettings( $form_id );
+
+		// PR1-I15: no form with this ID - never call the API with an empty system (PHP fatal error).
+		if ( empty( $form_settings ) ) {
+			return false;
+		}
+
 		$fields        = self::formatSubscriberFields( $fields, $form_settings['list_custom_fields'] );
 		$chosen_system = $form_settings['chosen_system'];
 
@@ -28,18 +34,31 @@ class DataManager {
 				$subscriber_details['tags']                = PluginHelpers::getVal( $form_settings, 'tags', array() );
 				$subscriber_details['onexisting_rejoin']   = PluginHelpers::getVal( $form_settings, 'onexisting_rejoin' );
 				$subscriber_details['onexisting_joindate'] = PluginHelpers::getVal( $form_settings, 'onexisting_joindate' );
+				$subscriber_details['onexisting_sms']      = PluginHelpers::getVal( $form_settings, 'onexisting_sms' );
 				break;
 		}
 
-		PluginAPI::run( $chosen_system )->createSubscriber( $subscriber_details );
+		// PR1-I10: false when the lead did not reach רב מסר (the widget then shows its error message).
+		return PluginAPI::run( $chosen_system )->submitSubscriber(
+			$subscriber_details,
+			array(
+				'integration' => 'Elementor widget',
+				'form'        => trim( PluginHelpers::getVal( $form_settings, 'title', '' ) . ' (' . $form_id . ')' ),
+			)
+		);
 	}
 
 	public static function getFormSettings( $form_id = '' ) {
 		$forms_settings = self::getFormsSettings();
 		$settings       = array();
 
+		// PR1-I15: no forms saved yet - nothing to look up.
+		if ( ! is_array( $forms_settings ) || '' === (string) $form_id ) {
+			return $settings;
+		}
+
 		foreach ( $forms_settings as $form_settings ) {
-			if ( $form_settings['generated_id'] === $form_id ) {
+			if ( is_array( $form_settings ) && PluginHelpers::getVal( $form_settings, 'generated_id' ) === $form_id ) {
 				$settings = $form_settings;
 				break;
 			}

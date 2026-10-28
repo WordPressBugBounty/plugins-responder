@@ -48,8 +48,11 @@ class SystemChoice extends ElementorBaseDataControl {
 		return array(
 			'connectedSystemsCount' => $this->connected_systems_count,
 			'options'               => array(
-				'responder'      => esc_html__( 'רב מסר', 'responder' ),
-				'responder_live' => esc_html__( 'רב מסר - מערכת חדשה', 'responder' ),
+				// Display order and names only. The default (get_default_value) stays the first
+				// connected system: Elementor does not save a value equal to the default, so
+				// changing it would switch existing forms (PR1-I5, PR1-I25).
+				'responder_live' => esc_html__( 'רב מסר', 'responder' ),
+				'responder'      => esc_html__( 'רב מסר הישנה', 'responder' ),
 			),
 		);
 	}

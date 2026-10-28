@@ -1,7 +1,7 @@
 <?php
   use RavMesser\Plugin\API as PluginAPI;
 
-  $rmp_systems_names = PluginAPI::getConnectedSystemsNames();
+  $rmp_systems_names = PluginAPI::getDisplaySystemsNames(); // current system first (PR1-I5)
   $rmp_systems_count = count( $rmp_systems_names );
 ?>
 
@@ -21,7 +21,7 @@
 		<input
 		  type="radio"
 		  name="rmp_choose_system"
-		  value="responder"
+		  value="responder_live"
 		  checked
 		/>
 		<?php esc_html_e( 'רב מסר', 'responder' ); ?>
@@ -32,9 +32,9 @@
 		<input
 		  type="radio"
 		  name="rmp_choose_system"
-		  value="responder_live"
+		  value="responder"
 		/>
-		<?php esc_html_e( 'רב מסר - מערכת חדשה', 'responder' ); ?>
+		<?php esc_html_e( 'רב מסר הישנה', 'responder' ); ?>
 	  </label>
 	</p>
   </fieldset>
@@ -61,11 +61,19 @@
   <?php esc_html_e( 'טוען נמענים...', 'responder' ); ?>
 </p>
 
+<div id="rmp-subscribers-error" class="notice notice-error inline" hidden><p></p></div>
+
 <div id="rmp-subscribers-table-wrap" class="rtl" hidden>
   <h4 class="total-count">
 	<?php esc_html_e( 'סך הכל נמענים ברשימה:', 'responder' ); ?>
 	<span></span>
   </h4>
+  <p class="description rmp-paged-note" data-system="responder_live" hidden>
+	<?php esc_html_e( 'מוצגים עד 100 נמענים בכל עמוד, והחיפוש מתבצע במערכת רב מסר. העתקה, ייצוא (CSV, Excel) והדפסה כוללים רק את העמוד המוצג.', 'responder' ); ?>
+  </p>
+  <p class="description rmp-paged-note" data-system="responder" hidden>
+	<?php esc_html_e( 'מוצגים עד 500 נמענים בכל עמוד. החיפוש מוצא נמען לפי כתובת מייל מלאה או מספר נמען. העתקה, ייצוא (CSV, Excel) והדפסה כוללים רק את העמוד המוצג.', 'responder' ); ?>
+  </p>
   <table>
 	<thead><tr></tr></thead>
 	<tbody></tbody>
@@ -83,17 +91,84 @@
 	var $rmpTableWrap  = jQuery('#rmp-subscribers-table-wrap');
 	var $rmpTableLoad  = jQuery('#rmp-loading-subscribers');
 
+	var $rmpTableError = jQuery('#rmp-subscribers-error');
+
 	$rmpTableWrap.attr('hidden', true);
+	$rmpTableError.attr('hidden', true);
 	$rmpTableLoad.removeAttr('hidden');
 
-	jQuery.RMP_AJAX('getSubscribersSheetByListId', { list_id: selectedListId, system_name: chosenSystem, })
+	var rmpShowTableError = function(data) {
+		var message = (data && data.message) || <?php echo wp_json_encode( esc_html__( 'לא הצלחנו לטעון את הרשימה. נסו שוב בעוד כמה דקות.', 'responder' ) ); ?>;
+
+		$rmpTableLoad.attr('hidden', true);
+		$rmpTableError.find('p').text(message);
+		$rmpTableError.removeAttr('hidden');
+	};
+
+	// PR1-I18: export names - "<list name> - <date>" (they were named after the admin page title).
+	var rmpListName       = jQuery.trim(jQuery(this).find('option:selected').text()) || String(selectedListId);
+	var rmpToday          = new Date();
+	var rmpExportDate     = rmpToday.getFullYear() + '-' + ('0' + (rmpToday.getMonth() + 1)).slice(-2) + '-' + ('0' + rmpToday.getDate()).slice(-2);
+	var rmpExportTitle    = rmpListName + ' - ' + rmpExportDate;
+	var rmpExportFileName = rmpExportTitle.replace(/[\\\/:*?"<>|]+/g, '-'); // characters Windows does not allow in file names
+	var rmpExportSheetName = rmpListName.replace(/[\[\]:*?\/\\]+/g, '-').slice(0, 31) || 'Sheet1'; // Excel: up to 31 characters, no []:*?/\
+
+	// PR1-I18: Excel shows the sheet right-to-left (<sheetViews> goes before <cols> in the sheet XML).
+	var rmpExcelRightToLeft = function(xlsx) {
+		var sheet = xlsx.xl.worksheets['sheet1.xml'];
+		var root  = sheet.documentElement;
+		var ns    = root.namespaceURI;
+		var views = sheet.createElementNS(ns, 'sheetViews');
+		var view  = sheet.createElementNS(ns, 'sheetView');
+
+		view.setAttribute('rightToLeft', '1');
+		view.setAttribute('workbookViewId', '0');
+		views.appendChild(view);
+		root.insertBefore(views, root.getElementsByTagName('cols')[0] || root.getElementsByTagName('sheetData')[0] || null);
+	};
+
+	// PR1-I17: רב מסר lists are loaded a page at a time (large lists timed out in one call).
+	var rmpPaged       = true; // both systems (רב מסר: search API, רב מסר הישנה: limit + offset)
+	// רב מסר הישנה: 500 per page - the most the V1 API returns per call (no page numbers there, fewer clicks).
+	var rmpPageSize    = chosenSystem === 'responder' ? 500 : 100;
+	var rmpRequestData = { list_id: selectedListId, system_name: chosenSystem, };
+
+	if (rmpPaged) {
+		rmpRequestData = _.extend({}, rmpRequestData, { paged: 1, offset: 0, size: rmpPageSize, search: '' });
+	}
+
+	// DataTables' answer for one page: totals from the list count, or estimated when unknown.
+	var rmpToDataTablesPage = function(page, draw, search) {
+		var rows     = page.rows || [];
+		var received = _.isNumber(page.received) ? page.received : rows.length;
+		var estimate = (page.offset || 0) + received + (received >= page.size ? 1 : 0);
+		var matched  = _.isNumber(page.matched) ? page.matched : estimate;
+		var total    = _.isNumber(page.count) ? page.count : matched;
+		var filtered = search ? matched : total;
+
+		return { draw: draw, recordsTotal: total, recordsFiltered: filtered, data: rows };
+	};
+
+	jQuery.RMP_AJAX('getSubscribersSheetByListId', rmpRequestData, true)
 	  .done(function(sheet) {
+		// PR1-I17: the list could not be loaded - the server sends a JSON error (success: false).
+		if (!sheet || sheet.success === false) {
+			rmpShowTableError(sheet && sheet.data);
+			return;
+		}
+
 		var headerColumns = '';
 		var rmpDataTableConfig = {
 		  'data': sheet.rows,
 		  'dom': 'Bfrtip',
+		  // PR1-I18: no PDF (pdfMake has no Hebrew font - every letter was an empty box; "הדפסה" saves a PDF instead),
+		  // CSV with a UTF-8 BOM (Excel showed gibberish), files and titles named after the list and the date,
+		  // and the Excel sheet right-to-left.
 		  'buttons': [
-			'copy', 'csv', 'excel', 'pdf', 'print'
+			{ extend: 'copy', title: rmpExportTitle },
+			{ extend: 'csv', bom: true, charset: 'utf-8', filename: rmpExportFileName },
+			{ extend: 'excel', title: rmpExportTitle, filename: rmpExportFileName, sheetName: rmpExportSheetName, customize: rmpExcelRightToLeft },
+			{ extend: 'print', title: rmpExportTitle }
 		  ],
 		  'language': {
 			'lengthMenu': 'מציג _MENU_ תוצאות בעמוד',
@@ -142,11 +217,69 @@
 			.append(headerColumns)
 		  .end();
 
+		if (rmpPaged) {
+			var rmpFirstPage    = sheet;
+			var rmpTotalUnknown = !_.isNumber(sheet.count); // רב מסר הישנה: the API has no total
+
+			if (rmpTotalUnknown) {
+				rmpDataTableConfig.pagingType   = 'simple';
+				rmpDataTableConfig.infoCallback = function(settings) {
+					return <?php echo wp_json_encode( esc_html__( 'עמוד', 'responder' ) ); ?> + ' ' + (Math.floor(settings._iDisplayStart / settings._iDisplayLength) + 1);
+				};
+			}
+
+			rmpDataTableConfig = _.extend({}, rmpDataTableConfig, {
+				'data': undefined,
+				'serverSide': true,
+				'processing': true,
+				'ordering': false,
+				'searchDelay': 700,
+				'pageLength': rmpPageSize,
+				'lengthMenu': [ rmpPageSize ],
+				'ajax': function(dtRequest, callback) {
+					var search = (dtRequest.search && dtRequest.search.value) || '';
+
+					// The first page was already loaded with the columns.
+					if (rmpFirstPage && dtRequest.start === 0 && dtRequest.length === rmpFirstPage.size && !search) {
+						var firstPage = rmpFirstPage;
+						rmpFirstPage = null;
+						return callback(rmpToDataTablesPage(firstPage, dtRequest.draw, ''));
+					}
+
+					jQuery.RMP_AJAX('getSubscribersSheetByListId', _.extend({}, rmpRequestData, {
+						offset: dtRequest.start,
+						size: dtRequest.length,
+						search: search
+					}), true)
+					  .done(function(page) {
+						if (!page || page.success === false) {
+							rmpShowTableError(page && page.data);
+							return callback({ draw: dtRequest.draw, recordsTotal: 0, recordsFiltered: 0, data: [] });
+						}
+
+						$rmpTableError.attr('hidden', true);
+						callback(rmpToDataTablesPage(page, dtRequest.draw, search));
+					  })
+					  .fail(function(xhr) {
+						rmpShowTableError(xhr && xhr.responseJSON && xhr.responseJSON.data);
+						callback({ draw: dtRequest.draw, recordsTotal: 0, recordsFiltered: 0, data: [] });
+					  });
+				}
+			});
+			delete rmpDataTableConfig.data;
+		}
+
 		rmpDataTable = $rmpTableWrap.find('table').DataTable(rmpDataTableConfig);
 
-		jQuery('#rmp-subscribers-table-wrap .total-count span').html(sheet.count);
+		$rmpTableWrap.find('.rmp-paged-note').attr('hidden', true).filter('[data-system="' + chosenSystem + '"]').attr('hidden', !rmpPaged);
+		$rmpTableWrap.find('.total-count').attr('hidden', !_.isNumber(sheet.count));
+		jQuery('#rmp-subscribers-table-wrap .total-count span').text(_.isNumber(sheet.count) ? sheet.count : '');
 		$rmpTableLoad.attr('hidden', true);
 		$rmpTableWrap.removeAttr('hidden');
+	  })
+	  // PR1-I17: never leave "טוען נמענים..." on screen - show why the list did not load.
+	  .fail(function(xhr) {
+		rmpShowTableError(xhr && xhr.responseJSON && xhr.responseJSON.data);
 	  });
   }
 
@@ -157,6 +290,7 @@
 
 	$rmpTableWrap.attr('hidden', true);
 	$rmpTableLoad.attr('hidden', true);
+	jQuery('#rmp-subscribers-error').attr('hidden', true);
 
 	$rmpListsSelect
 	  .select2({

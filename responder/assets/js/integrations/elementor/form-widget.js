@@ -14,12 +14,12 @@ jQuery(window).on('elementor/frontend/init', function () {
     beforeSubmit($currentForm);
 
     if (validateForm($currentForm)) {
-      $.RMP_AJAX('submitElementorForm', getFormData($currentForm), true)
+      sendForm($currentForm, true)
         .done(function (response) {
           onFormSent($currentForm)
         })
-        .fail(function () {
-          onFormFailure($currentForm);
+        .fail(function (xhr) {
+          onFormFailure($currentForm, xhr);
         })
         .always(function () {
           afterSubmit($currentForm);
@@ -29,6 +29,40 @@ jQuery(window).on('elementor/frontend/init', function () {
     }
 
     event.preventDefault();
+  }
+
+  // PR1-I14: the server accepts the form only with a valid nonce. A page served from cache can hold an
+  // expired one - then get a fresh nonce and send the form once more.
+  function sendForm($form, retryOnInvalidNonce) {
+    var result = $.Deferred();
+
+    $.RMP_AJAX('submitElementorForm', getFormData($form), true)
+      .done(function (response) {
+        result.resolve(response);
+      })
+      .fail(function (xhr) {
+        var data = (xhr && xhr.responseJSON && xhr.responseJSON.data) || {};
+
+        if (retryOnInvalidNonce && xhr && xhr.status === 403 && data.code === 'rmp_invalid_nonce') {
+          $.RMP_AJAX('getFormNonce', {}, true)
+            .done(function (nonceResponse) {
+              if (nonceResponse && nonceResponse._nonce) {
+                RMP_AJAX_LOCALS._nonce = nonceResponse._nonce;
+              }
+
+              sendForm($form, false).done(result.resolve).fail(result.reject);
+            })
+            .fail(function () {
+              result.reject(xhr);
+            });
+
+          return;
+        }
+
+        result.reject(xhr);
+      });
+
+    return result.promise();
   }
 
   function getFormData($form) {
@@ -61,8 +95,7 @@ jQuery(window).on('elementor/frontend/init', function () {
         urlThankYou       = $form.data('urlthankyou'),
         openNew           = $form.data('urlthankyou-opennew') === 'yes',
         addParams         = $form.data('urlthankyou-addparams') === 'yes',
-        searchQuery       = $.param(getFormData($form).uriFields),
-        querySeparator    = '?';
+        uriFields         = getFormData($form).uriFields;
 
     $form
       .find('.fields-wrapper').hide().end()
@@ -70,11 +103,7 @@ jQuery(window).on('elementor/frontend/init', function () {
 
     if (actionAfterSubmit === 'redirect_to_thankyou_page') {
       if (addParams) {
-        if (urlThankYou.indexOf(querySeparator) !== -1) {
-          querySeparator = '&';
-        }
-
-        urlThankYou = encodeURI(urlThankYou + querySeparator + searchQuery);
+        urlThankYou = buildThankYouUrl(urlThankYou, uriFields);
       }
 
       if (openNew) {
@@ -85,7 +114,63 @@ jQuery(window).on('elementor/frontend/init', function () {
     }
   }
 
-  function onFormFailure($form) {
+  // Adds the form fields to the thank-you URL, each value encoded exactly once, with the right
+  // "?" / "&" separator. Fields without a URL parameter name or without a value are skipped (PR1-I9).
+  // PR1-I26: WordPress reserves some query vars (e.g. "name" = post slug), so a page on this
+  // site opened with ?name=... is a 404. On the same site the alias is used; on another site
+  // the original parameter is kept, so existing external thank-you pages keep working.
+  var RESERVED_URI_PARAM_ALIASES = { name: 'full_name' };
+
+  function isSameSite(url) {
+    var strip = function (host) { return String(host || '').toLowerCase().replace(/^www\./, ''); };
+
+    return strip(url.hostname) === strip(window.location.hostname);
+  }
+
+  function safeUriParam(name, sameSite) {
+    var match = /^(.*?)(\[\])?$/.exec(String(name)),
+        base  = match[1],
+        alias = sameSite && Object.prototype.hasOwnProperty.call(RESERVED_URI_PARAM_ALIASES, base)
+          ? RESERVED_URI_PARAM_ALIASES[base] : null;
+
+    return alias ? alias + (match[2] || '') : name;
+  }
+
+  function buildThankYouUrl(baseUrl, fields) {
+    var url, sameSite;
+
+    try {
+      url = new URL(baseUrl, window.location.href);
+    } catch (error) {
+      return baseUrl;
+    }
+
+    sameSite = isSameSite(url);
+
+    _.each(fields || [], function (field) {
+      var name  = field && field.name,
+          value = field && field.value;
+
+      if (!name || value === undefined || value === null || String(value).trim() === '') {
+        return;
+      }
+
+      url.searchParams.append(safeUriParam(name, sameSite), value);
+    });
+
+    return url.toString();
+  }
+
+  // PR1-I15: a deleted form gets the server's own message ("no longer active") - "try again" would never work.
+  function onFormFailure($form, xhr) {
+    var data = (xhr && xhr.responseJSON && xhr.responseJSON.data) || {};
+
+    // PR1-I15 / PR1-I10: the server's own message (the lead did not reach רב מסר, or the form no longer exists).
+    if ((data.code === 'rmp_form_not_found' || data.code === 'rmp_submission_failed') && data.message) {
+      showErrorMessages($form, [$('<span>').text(data.message).html()]);
+      return;
+    }
+
     showErrorMessages($form, [
       getErrorMessage('server_error')
     ]);
@@ -160,11 +245,9 @@ jQuery(window).on('elementor/frontend/init', function () {
         break;
 
       case 'phone':
-        regexFilter = /^(?:050|051|052|053|054|055|057|058|02|03|04|08|09)\d{7}$/;
-
         if (!validateFieldIfRequired($fieldInputs, fieldType)) {
           errorMessage = getErrorMessage('required', fieldLabel);
-        } else if (!validateFieldByFilter($fieldInputs, regexFilter)) {
+        } else if (!validateIsraeliPhone($fieldInputs)) {
           errorMessage = getErrorMessage('invalid_phone');
         }
         break;
@@ -196,6 +279,40 @@ jQuery(window).on('elementor/frontend/init', function () {
     }
 
     return filter.test(value);
+  }
+
+  // Same rule as PHP Helpers::normalizePhone / isValidIsraeliPhone (PR1-I8):
+  // digits only, +972 / 00972 -> 0, then mobile 050-059, 07X (10 digits) or landline 02/03/04/08/09 (9 digits).
+  function normalizePhone(value) {
+    var digits = String(value || '').replace(/[^\d]/g, '');
+
+    if (digits.indexOf('00972') === 0) {
+      digits = digits.substring(2);
+    }
+
+    if (digits.indexOf('972') === 0 && digits.length >= 11) {
+      digits = digits.substring(3);
+
+      if (digits.indexOf('0') !== 0) {
+        digits = '0' + digits;
+      }
+    }
+
+    return digits;
+  }
+
+  function validateIsraeliPhone($fieldInputs) {
+    var value = $fieldInputs.val().trim();
+
+    if (!value.length) {
+      return true;
+    }
+
+    if (/[^\d\s\-+().]/.test(value)) {
+      return false;
+    }
+
+    return /^0(?:5\d|7\d|[23489])\d{7}$/.test(normalizePhone(value));
   }
 
   function validateFieldIfRequired($fieldInputs, fieldType) {

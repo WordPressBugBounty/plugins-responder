@@ -47,11 +47,11 @@ $rmp_chosen_system = $rmp_systems_names[0];
 					  </th>
 					  <td>
 						<select name="chosen_system">
-						  <option value="responder" selected="selected">
+						  <option value="responder_live" selected="selected">
 							<?php esc_html_e( 'רב מסר', 'responder' ); ?>
 						  </option>
-						  <option value="responder_live">
-							<?php esc_html_e( 'רב מסר - מערכת חדשה', 'responder' ); ?>
+						  <option value="responder">
+							<?php esc_html_e( 'רב מסר הישנה', 'responder' ); ?>
 						  </option>
 						</select>
 					  </td>
@@ -137,6 +137,15 @@ $rmp_chosen_system = $rmp_systems_names[0];
 					</th>
 					<td>
 					  <input type="checkbox" name="onexisting_joindate" value="joindate" />
+					</td>
+				  </tr>
+
+				  <tr valign="middle" class="hidden">
+					<th scope="row">
+					  <?php esc_html_e( 'אם הנמען ביקש הסרה מ-SMS, להחזיר אותו לקבלת SMS (רב מסר בלבד, רק כשמילא טלפון)', 'responder' ); ?>
+					</th>
+					<td>
+					  <input type="checkbox" name="onexisting_sms" value="sms" />
 					</td>
 				  </tr>
 				</table>

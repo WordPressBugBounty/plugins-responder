@@ -8,8 +8,8 @@
 
 	<br>
 
-	<a href="https://www.youtube.com/watch?v=sqIMNKLB9Cs" target="_blank">
-		<?php esc_html_e( 'צפייה בסרטון הדרכה', 'responder' ); ?>
+	<a href="<?php echo esc_url( RavMesser\Plugin\API::getHelpLink() ); ?>" target="_blank" rel="noopener">
+		<?php esc_html_e( 'לפרטים נוספים לחצו כאן', 'responder' ); ?>
 	</a>
 </p>
 <?php //phpcs:enable ?>
@@ -35,6 +35,15 @@
 
   <div id="res_message_error" class="unite-color-red" style="display:none">
 	<?php esc_html_e( 'ההגדרות לא נשמרו', 'responder' ); ?>
+  </div>
+
+  <?php // PR1-I32: shown (and the save is stopped) when a form has no list. ?>
+  <div id="res_message_no_list" class="notice notice-error inline rmp-no-list-message" style="display:none">
+	<p>
+	  <?php esc_html_e( 'לא נבחרה רשימה ברב מסר בטופס:', 'responder' ); ?>
+	  <strong class="rmp-no-list-forms"></strong>.
+	  <?php esc_html_e( 'בלי רשימה הפרטים מהטופס לא נשלחים לרב מסר, ולכן הטפסים לא נשמרו. בחרו רשימה ושמרו שוב.', 'responder' ); ?>
+	</p>
   </div>
 
   <div id="res_message_error" class="unite_error_message" style="display:none">

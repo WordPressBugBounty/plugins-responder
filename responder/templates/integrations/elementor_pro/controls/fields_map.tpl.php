@@ -67,6 +67,10 @@
           <?php esc_html_e('התאמת אפשרויות הבחירה של', 'responder') ?> <span style="text-decoration: underline"><%= data.personalField.name %></span>
         </span>
 
+        <div class="elementor-control-field-description" style="margin: 0 0 10px 0">
+          <?php esc_html_e('אפשרות שנשארת על "---" מותאמת בשליחה לאפשרות ברשימה עם אותו שם.', 'responder') ?>
+        </div>
+
         <% _.each(data.fieldOptions, function(fieldOption) { %>
           <div class="elementor-control-field" style="margin-bottom: 5px">
             <label for="rmp-<%= fieldOption.personalFieldOption.id %>" class="elementor-control-title">

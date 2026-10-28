@@ -22,7 +22,19 @@ class ResHiddenTag {
 		$atts['data-value'] = $value;
 
 		if ( self::isGetValueOptionExist( $tag ) ) {
-			$value = PluginHelpers::getPostGetVariable( $value, PluginHelpers::SANITIZE_TEXT_FIELD );
+			// PR1-I26: "name" is reserved by WordPress (?name=... is a 404), so the alias
+			// (full_name) is read first and the original parameter is kept as a fallback.
+			$param      = $value;
+			$safe_param = PluginHelpers::safeUriParam( $param );
+			$value      = '';
+
+			if ( $safe_param !== $param ) {
+				$value = PluginHelpers::getPostGetVariable( $safe_param, PluginHelpers::SANITIZE_TEXT_FIELD );
+			}
+
+			if ( $value === '' ) {
+				$value = PluginHelpers::getPostGetVariable( $param, PluginHelpers::SANITIZE_TEXT_FIELD );
+			}
 		}
 
 		$atts['name']  = $tag->name;

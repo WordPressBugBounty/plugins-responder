@@ -21,6 +21,8 @@ class ResponderOAuthConsumer {
 
 	public $key;
 	public $secret;
+	public $callback_url;
+	public $consumer_id;
 
 	public function __construct( $key, $secret, $callback_url = null, $consumer_id = null ) {
 		$this->key          = $key;
@@ -39,6 +41,7 @@ class ResponderOAuthToken {
 	// access tokens and request tokens
 	public $key;
 	public $secret;
+	public $user_id;
 
 	/**
 	 * key = the token

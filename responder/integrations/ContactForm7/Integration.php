@@ -6,9 +6,13 @@ use RavMesser\Plugin\Enqueue as PluginEnqueue;
 use RavMesser\Integrations\ContactForm7\DataManager as ContactForm7DataManager;
 use RavMesser\Integrations\ContactForm7\FormHelper as ContactForm7FormHelper;
 use RavMesser\Plugin\Helpers as PluginHelpers;
+use RavMesser\Plugin\SubmissionFailures;
 use WPCF7_Submission;
 
 class Integration {
+
+	/** True when the current submission did not reach רב מסר (PR1-I10). */
+	private static $api_failed = false;
 
 	public static function afterSavePanel( $form ) {
 		$current_action  = wpcf7_current_action();
@@ -20,6 +24,13 @@ class Integration {
 
 				if ( ! empty( $form_data ) && $form_data['save_changes'] === 'true' ) {
 					unset( $form_data['save_changes'] );
+
+					// PR1-I20: "בחירת רשימה" on a form that is not connected yet - nothing to save, the form
+					// stays a plain CF7 form (a connected form cannot be saved without a list, see panel.js).
+					if ( '' === trim( (string) PluginHelpers::getVal( $form_data, 'list', '' ) ) && empty( ContactForm7DataManager::getFormSettings( $current_form_id ) ) ) {
+						break;
+					}
+
 					ContactForm7DataManager::saveFormSettingsFromPanel( $current_form_id, $form_data );
 				}
 				break;
@@ -58,7 +69,7 @@ class Integration {
 	}
 
 	public static function noAjaxFallback( $contact_form ) {
-		if ( wp_doing_ajax() ) {
+		if ( wp_doing_ajax() || self::$api_failed ) {
 			return;
 		}
 
@@ -73,7 +84,7 @@ class Integration {
 			'inputs'                     => $form_data,
 		);
 
-		self::registerFrontendEnqueue();
+		self::enqueueFrontendScript();
 		wp_localize_script( 'rmp-cf7-form', 'rmpCF7MailSentData', $form_data );
 	}
 
@@ -81,8 +92,10 @@ class Integration {
 		add_action( 'admin_enqueue_scripts', array( __CLASS__, 'registerAdminEnqueue' ) );
 		add_action( 'wpcf7_after_save', array( __CLASS__, 'afterSavePanel' ) );
 		add_action( 'wpcf7_before_send_mail', array( __CLASS__, 'sendFormDataToAPI' ), 20, 3 );
+		add_action( 'wpcf7_mail_sent', array( __CLASS__, 'markSubmissionFailed' ), 5, 1 );
 		add_action( 'wpcf7_mail_sent', array( __CLASS__, 'noAjaxFallback' ), 20, 1 );
 		add_action( 'wpcf7_enqueue_scripts', array( __CLASS__, 'registerFrontendEnqueue' ) );
+		add_filter( 'wpcf7_form_elements', array( __CLASS__, 'onFormElements' ) );
 		add_action( 'wpcf7_init', array( 'RavMesser\Integrations\ContactForm7\Custom\ResHiddenTag', 'register' ), 10, 0 );
 		add_filter( 'wpcf7_validate_tel', array( 'RavMesser\Integrations\ContactForm7\Custom\PhoneValidation', 'validate' ), 20, 2 );
 		add_filter( 'wpcf7_validate_tel*', array( 'RavMesser\Integrations\ContactForm7\Custom\PhoneValidation', 'validate' ), 20, 2 );
@@ -132,15 +145,29 @@ class Integration {
 		return array_merge( $panels, $responder_panel );
 	}
 
+	// PR1-I16: register only (CF7 fires wpcf7_enqueue_scripts on every page by default).
 	public static function registerFrontendEnqueue() {
-		if ( ! wp_script_is( 'rmp-cf7-form', 'enqueued' ) ) {
-			wp_enqueue_script(
+		if ( ! wp_script_is( 'rmp-cf7-form', 'registered' ) ) {
+			wp_register_script(
 				'rmp-cf7-form',
 				PluginEnqueue::$ASSETS_URL . '/js/integrations/contact-form-7/form.js',
 				array( 'jquery' ),
-				RAV_MESSER_VERSION
+				RAV_MESSER_VERSION,
+				true
 			);
 		}
+	}
+
+	// PR1-I16: load form.js only when a CF7 form is printed on the page (also inside Elementor or a popup).
+	public static function enqueueFrontendScript() {
+		self::registerFrontendEnqueue();
+		wp_enqueue_script( 'rmp-cf7-form' );
+	}
+
+	public static function onFormElements( $form_elements ) {
+		self::enqueueFrontendScript();
+
+		return $form_elements;
 	}
 
 	public static function sendFormDataToAPI( $contact_form, $data, $submission ) {
@@ -150,7 +177,24 @@ class Integration {
 			$submission->get_posted_data()
 		);
 
-		ContactForm7DataManager::createSubscriber( $form_id, $form_data );
+		self::$api_failed = ( false === ContactForm7DataManager::createSubscriber( $form_id, $form_data ) );
+	}
+
+	/**
+	 * PR1-I10: the lead did not reach רב מסר. CF7's own email is still sent as usual, but the
+	 * visitor gets an error (red CF7 message, no redirect to the thank-you page) so they can try again.
+	 */
+	public static function markSubmissionFailed( $contact_form ) {
+		if ( ! self::$api_failed ) {
+			return;
+		}
+
+		$submission = WPCF7_Submission::get_instance();
+
+		if ( $submission ) {
+			$submission->set_status( 'mail_failed' );
+			$submission->set_response( SubmissionFailures::visitorMessage() );
+		}
 	}
 
 	public static function tabEnqueue() {

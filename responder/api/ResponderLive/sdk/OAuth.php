@@ -42,7 +42,7 @@ class OAuth {
 			$options = array(
 				CURLOPT_URL            => self::$url_base . trim( $path, '/' ),
 				CURLOPT_CUSTOMREQUEST  => strtoupper( $method ),
-				CURLOPT_USERAGENT      => self::$user_agent,
+				CURLOPT_USERAGENT      => \RavMesser\Plugin\Helpers::apiUserAgent(),
 				CURLOPT_FOLLOWLOCATION => true,
 				CURLOPT_HTTP_VERSION   => CURL_HTTP_VERSION_1_1,
 				CURLOPT_MAXREDIRS      => 10,
@@ -93,8 +93,18 @@ class OAuth {
 			curl_setopt_array( $connection, $options );
 			$response      = curl_exec( $connection );
 			$response_code = curl_getinfo( $connection, CURLINFO_RESPONSE_CODE );
+			$curl_errno    = curl_errno( $connection );
 
-			curl_close( $connection );
+			// PHP 8.0+ frees the handle by itself; curl_close() is deprecated in PHP 8.5.
+			if ( PHP_VERSION_ID < 80000 ) {
+				curl_close( $connection );
+			}
+
+			// PR1-I17: a timeout is not a token problem - retrying with a new token (up to 3 more
+			// times x 30 s) only made the page wait 2+ minutes until the server cut it off.
+			if ( defined( 'CURLE_OPERATION_TIMEDOUT' ) && CURLE_OPERATION_TIMEDOUT === $curl_errno ) {
+				return '';
+			}
 
 			if ( $response_code !== 200 ) {
 				throw new Exception( $response );

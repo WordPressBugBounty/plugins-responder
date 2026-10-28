@@ -373,3 +373,62 @@ table.dataTable tr.even td {
 .res-hidden {
 	display: none;
 }
+
+/* "לפני שמתחילים" – guide callout (PR1-I3) */
+.responder-callout {
+	background: #fff4e5;
+	border-right: 4px solid #f0a020;
+	padding: 8px 12px;
+	margin: 16px 0;
+}
+
+/* "חיבור לרב מסר" – both systems use the same heading size (PR1-I4) */
+.responder-connection-title-old {
+	margin-top: 32px;
+}
+
+.responder-connection-help {
+	margin-top: 0;
+}
+
+/* Masked credential fields with show / hide and copy buttons (PR1-I4) */
+.rmp-secret-field {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+}
+
+.rmp-secret-field .rmp-secret-input {
+	font-family: monospace;
+}
+
+.rmp-secret-field .button {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-width: 32px;
+}
+
+.rmp-secret-copied {
+	color: #008a20;
+	font-size: 12px;
+}
+
+/* "פרטים טכניים" under a connection error (PR1-I4) */
+.rmp-error-details {
+	margin: 0 0 8px;
+}
+
+.rmp-error-details summary {
+	cursor: pointer;
+	color: #50575e;
+}
+
+.rmp-error-details code {
+	display: block;
+	margin-top: 6px;
+	padding: 6px 8px;
+	white-space: pre-wrap;
+	word-break: break-all;
+	text-align: left;
+}

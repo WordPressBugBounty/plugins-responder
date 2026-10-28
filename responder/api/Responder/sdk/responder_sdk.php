@@ -20,6 +20,11 @@ class ResponderOAuth {
 	public $url;
 	/* Set the useragnet. */
 	public $useragent = 'ResponderOAuth v0.1-beta';
+	/* Declared for PHP 8.2+ (no "Creation of dynamic property" notice). */
+	public $signature;
+	public $consumer;
+	public $token;
+	public $http_header = array();
 
 	public function __construct( $consumer_key, $consumer_secret, $oauth_token = null, $oauth_token_secret = null ) {
 		$this->signature = new ResponderOAuthSignatureMethod_HMAC_SHA1();
@@ -54,7 +59,7 @@ class ResponderOAuth {
 		}
 
 		/* Curl settings */
-		curl_setopt( $ci, CURLOPT_USERAGENT, $this->useragent );
+		curl_setopt( $ci, CURLOPT_USERAGENT, $this->useragent . '; ' . \RavMesser\Plugin\Helpers::apiUserAgent() );
 		curl_setopt( $ci, CURLOPT_CONNECTTIMEOUT, $this->connecttimeout );
 		curl_setopt( $ci, CURLOPT_TIMEOUT, $this->timeout );
 		curl_setopt( $ci, CURLOPT_RETURNTRANSFER, true );
@@ -89,7 +94,10 @@ class ResponderOAuth {
 		$this->http_code = curl_getinfo( $ci, CURLINFO_HTTP_CODE );
 		$this->http_info = array_merge( $this->http_info, curl_getinfo( $ci ) );
 		$this->url       = $url;
-		curl_close( $ci );
+		// PHP 8.0+ frees the handle by itself; curl_close() is deprecated in PHP 8.5.
+		if ( PHP_VERSION_ID < 80000 ) {
+			curl_close( $ci );
+		}
 		return $response;
 	}
 

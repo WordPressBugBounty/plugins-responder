@@ -2,6 +2,8 @@
 
 defined( 'ABSPATH' ) or die( 'Hey, what are you doing here? You silly human!' );
 
+use RavMesser\Plugin\Helpers as PluginHelpers;
+
 class FieldsFormatter {
 
 	const FIELDS_MAP = array(
@@ -17,7 +19,11 @@ class FieldsFormatter {
 	private $fields  = array();
 
 	public function __construct( $fields = array(), $fields_values = array() ) {
-		if ( ! empty( $fields['personal_fields'] ) ) {
+		// PR1-I17: an unexpected API answer must not stop the whole list.
+		$fields        = is_array( $fields ) ? $fields : array();
+		$fields_values = is_array( $fields_values ) ? $fields_values : array();
+
+		if ( ! empty( $fields['personal_fields'] ) && is_array( $fields['personal_fields'] ) ) {
 			$personal_fields = self::formatFields(
 				$fields['personal_fields'],
 				$fields_values
@@ -26,7 +32,7 @@ class FieldsFormatter {
 			$this->fields = array_merge( $this->fields, $personal_fields );
 		}
 
-		if ( ! empty( $fields['all_lists_personal_fields'] ) ) {
+		if ( ! empty( $fields['all_lists_personal_fields'] ) && is_array( $fields['all_lists_personal_fields'] ) ) {
 			$all_lists_personal_fields = self::formatFields(
 				$fields['all_lists_personal_fields'],
 				$fields_values
@@ -55,14 +61,37 @@ class FieldsFormatter {
 		return $name_value_fields;
 	}
 
-	public static function getTypeById( $type_id = 1 ) {
-		return self::FIELDS_MAP[ $type_id ];
+	/**
+	 * PR1-I26: values by field id - two fields of a list may have the same name (e.g. "utm_source"),
+	 * and a name-keyed array keeps only the last one.
+	 */
+	public function getIdValueFields() {
+		$id_value_fields = array();
+
+		foreach ( $this->getFields() as $field ) {
+			if ( is_array( $field ) && isset( $field['id'] ) ) {
+				$id_value_fields[ (string) $field['id'] ] = PluginHelpers::getVal( $field, 'formatted_value', '' );
+			}
+		}
+
+		return $id_value_fields;
 	}
 
-	private static function formatChoiceField( $field = array(), $field_value ) {
+	/**
+	 * PR1-I17: a field type the plugin does not know yet (the API added type 9) is handled as text, not a PHP warning.
+	 */
+	public static function getTypeById( $type_id = 1 ) {
+		$type_id = (int) $type_id;
+
+		return isset( self::FIELDS_MAP[ $type_id ] ) ? self::FIELDS_MAP[ $type_id ] : 'text';
+	}
+
+	private static function formatChoiceField( $field = array(), $field_value = '' ) {
+		$field['formatted_value'] = '';
+
 		if ( isset( $field_value ) && ! empty( $field_value ) ) {
-			foreach ( $field['options'] as $option ) {
-				if ( $field_value === $option['id'] ) {
+			foreach ( (array) PluginHelpers::getVal( $field, 'options', array() ) as $option ) {
+				if ( is_array( $option ) && isset( $option['id'], $option['name'] ) && (string) $field_value === (string) $option['id'] ) {
 					$field['formatted_value'] = $option['name'];
 				}
 			}
@@ -73,23 +102,45 @@ class FieldsFormatter {
 		return $field;
 	}
 
-	private static function formatDateField( $field = array(), $field_value ) {
-		if ( isset( $field_value ) && ! empty( $field_value ) && $field_value['day'] > 0 && $field_value['month'] > 0 && $field_value['year'] > 0 ) {
-			$field['formatted_value'] = "{$field_value['day']}-{$field_value['month']}-{$field_value['year']}";
-		} elseif ( $field['day'] > 0 && $field['month'] > 0 && $field['year'] > 0 ) {
-			$field['formatted_value'] = "{$field_value['day']}-{$field_value['month']}-{$field_value['year']}";
-		} else {
-			$field['formatted_value'] = '';
+	/**
+	 * PR1-I17: a date comes as array( day, month, year ). With no value, the field's own default date is used
+	 * (the old code read the empty value there - PHP fatal error). Any other value is shown as it came.
+	 */
+	private static function formatDateField( $field = array(), $field_value = '' ) {
+		$field['formatted_value'] = '';
+
+		if ( self::isFullDate( $field_value ) ) {
+			$field['formatted_value'] = self::dateToText( $field_value );
+		} elseif ( empty( $field_value ) && self::isFullDate( $field ) ) {
+			$field['formatted_value'] = self::dateToText( $field );
+		} elseif ( is_scalar( $field_value ) ) {
+			$field['formatted_value'] = (string) $field_value;
 		}
 
 		return $field;
 	}
 
-	private static function formatField( $field = array(), $field_value ) {
+	private static function isFullDate( $date ) {
+		return is_array( $date )
+			&& (int) PluginHelpers::getVal( $date, 'day', 0 ) > 0
+			&& (int) PluginHelpers::getVal( $date, 'month', 0 ) > 0
+			&& (int) PluginHelpers::getVal( $date, 'year', 0 ) > 0;
+	}
+
+	private static function dateToText( $date ) {
+		return (int) $date['day'] . '-' . (int) $date['month'] . '-' . (int) $date['year'];
+	}
+
+	private static function formatField( $field = array(), $field_value = '' ) {
 		if ( isset( $field_value ) ) {
 			$field['formatted_value'] = $field_value;
 		} else {
-			$field['formatted_value'] = $field['default'];
+			$field['formatted_value'] = PluginHelpers::getVal( $field, 'default', '' );
+		}
+
+		// A value of a type the plugin does not know may be an array - show it as text.
+		if ( is_array( $field['formatted_value'] ) ) {
+			$field['formatted_value'] = implode( ',', array_map( 'strval', array_filter( $field['formatted_value'], 'is_scalar' ) ) );
 		}
 
 		return $field;
@@ -99,6 +150,10 @@ class FieldsFormatter {
 		$new_fields = array();
 
 		foreach ( $fields as $field ) {
+			if ( ! is_array( $field ) || ! isset( $field['id'] ) ) {
+				continue;
+			}
+
 			$field_value = '';
 
 			if ( isset( $fields_values[ $field['id'] ] ) && ! empty( $fields_values[ $field['id'] ] ) ) {
@@ -111,8 +166,9 @@ class FieldsFormatter {
 		return $new_fields;
 	}
 
-	private static function formatFieldValue( $field = array(), $field_value ) {
-		$field_type = self::FIELDS_MAP[ $field['type_id'] ];
+	private static function formatFieldValue( $field = array(), $field_value = '' ) {
+		$field_type = self::getTypeById( PluginHelpers::getVal( $field, 'type_id', 1 ) );
+		$field      = array_merge( array( 'name' => '' ), $field );
 
 		switch ( $field_type ) {
 			case 'text':
@@ -133,15 +189,17 @@ class FieldsFormatter {
 			case 'multichoice':
 				return self::formatMultiChoiceField( $field, $field_value );
 			break;
+			default:
+				return self::formatField( $field, $field_value );
 		}
 	}
 
-	private static function formatMultiChoiceField( $field = array(), $field_value ) {
+	private static function formatMultiChoiceField( $field = array(), $field_value = array() ) {
 		$field['formatted_value'] = array();
 
 		if ( isset( $field_value ) && ! empty( $field_value ) ) {
-			foreach ( $field['options'] as $option ) {
-				if ( in_array( $option['id'], $field_value ) ) {
+			foreach ( (array) PluginHelpers::getVal( $field, 'options', array() ) as $option ) {
+				if ( is_array( $option ) && isset( $option['id'], $option['name'] ) && in_array( $option['id'], (array) $field_value ) ) {
 					array_push( $field['formatted_value'], $option['name'] );
 				}
 			}
@@ -154,11 +212,11 @@ class FieldsFormatter {
 		return $field;
 	}
 
-	private static function formatPhoneField( $field = array(), $field_value ) {
-		if ( isset( $field_value ) && ! empty( $field_value ) ) {
+	private static function formatPhoneField( $field = array(), $field_value = '' ) {
+		if ( isset( $field_value ) && ! empty( $field_value ) && is_scalar( $field_value ) ) {
 			$field['formatted_value'] = $field_value;
 		} else {
-			$field['formatted_value'] = $field['phone'];
+			$field['formatted_value'] = PluginHelpers::getVal( $field, 'phone', '' );
 		}
 
 		return $field;

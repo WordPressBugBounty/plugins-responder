@@ -80,6 +80,7 @@ class ComposerStaticInit3219dd3ddfd3cb7dc29b5569de8a6f0b
         'RavMesser\\Plugin\\OptionsManager' => __DIR__ . '/../..' . '/plugin/OptionsManager.php',
         'RavMesser\\Plugin\\Settings' => __DIR__ . '/../..' . '/plugin/Settings.php',
         'RavMesser\\Plugin\\SettingsPage' => __DIR__ . '/../..' . '/plugin/SettingsPage.php',
+        'RavMesser\\Plugin\\SubmissionFailures' => __DIR__ . '/../..' . '/plugin/SubmissionFailures.php',
     );
 
     public static function getInitializer(ClassLoader $loader)

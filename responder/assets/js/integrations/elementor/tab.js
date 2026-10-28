@@ -24,6 +24,7 @@
     'list_id_unite_selected_text': '',
     'onexisting_joindate': '',
     'onexisting_rejoin': '',
+    'onexisting_sms': '',
     'tags': [],
     'title': ''
   };
@@ -132,6 +133,11 @@
     // Set value
     itemValue[name] = value;
 
+    // PR1-I32: a list was chosen - clear the "no list" mark of this form
+    if ($target.is('[name="list_id"]') && value) {
+      $target.closest('tr').removeClass('rmp-no-list');
+    }
+
     // Create and add a new tag if needed
     if ($target.is('[name="tags"]')) {
       var fetchedTagsIds = _.pluck(fetchedTags, 'id'),
@@ -169,6 +175,7 @@
         'list_id': '',
         'onexisting_joindate': '',
         'onexisting_rejoin': '',
+        'onexisting_sms': '',
         'tags': [],
       });
 
@@ -185,7 +192,12 @@
         $saveButton     = $buttonWrapper.find('#res_button_save_elementor_settings'),
         $loadingText    = $buttonWrapper.find('#res_saving_text'),
         $successMessage = $buttonWrapper.find('#res_message_saved'),
-        $errorMessage   = $buttonWrapper.find('#res_message_error');
+        $errorMessage   = $buttonWrapper.find('#res_message_error'),
+        $noListMessage  = $buttonWrapper.find('#res_message_no_list'),
+        formsWithoutList = [];
+
+    $noListMessage.hide();
+    $formsList.find('.rmp-no-list').removeClass('rmp-no-list');
 
     $formsList.children().each(function(index, form) {
       var $form = $(form),
@@ -197,11 +209,21 @@
         dataset['list_id_unite_selected_text'] = selectedFormName.trim();
       }
 
+      // PR1-I32: a form without a list would show the visitor "success" and send nothing - do not save it.
+      if (!dataset['list_id']) {
+        formsWithoutList.push({ $form: $form, title: dataset['title'] || '' });
+      }
+
       // Clear personal fields
       dataset['list_custom_fields'] = [];
 
       itemValues.push(dataset);
     });
+
+    if (formsWithoutList.length) {
+      showNoListMessage(formsWithoutList, $noListMessage);
+      return;
+    }
 
     $saveButton.hide();
     $loadingText.show();
@@ -212,11 +234,44 @@
         $successMessage.show(0).delay(700).hide(0);
         $saveButton.delay(700).show(0);
       })
-      .fail(function() {
+      .fail(function(xhr) {
+        var errorData = xhr && xhr.responseJSON && xhr.responseJSON.data;
+
         $loadingText.hide();
-        $errorMessage.show(0).delay(700).hide(0);
         $saveButton.delay(700).show(0);
+
+        // PR1-I32: the server also refuses forms without a list.
+        if (errorData && errorData.code === 'rmp_no_list') {
+          showNoListMessage(_.map(errorData.forms || [], function(title) {
+            return { $form: $(), title: title };
+          }), $noListMessage);
+          return;
+        }
+
+        $errorMessage.show(0).delay(700).hide(0);
       });
+  }
+
+  function showNoListMessage(forms, $message) {
+    var titles = _.map(forms, function(form) {
+      return form.title ? '"' + form.title + '"' : '(' + rmpNoTitle() + ')';
+    });
+
+    _.each(forms, function(form) {
+      form.$form.removeClass('unite-item-closed');
+      form.$form.find('[name="list_id"]').closest('tr').addClass('rmp-no-list');
+    });
+
+    $message.find('.rmp-no-list-forms').text(titles.join(', '));
+    $message.show();
+
+    if (forms.length && forms[0].$form.length) {
+      $('html, body').animate({ scrollTop: forms[0].$form.offset().top - 60 }, 200);
+    }
+  }
+
+  function rmpNoTitle() {
+    return 'ללא שם';
   }
 
   function renderForms() {
@@ -275,7 +330,7 @@
     switch(itemValue.chosen_system) {
       case 'responder':
         $form
-          .find('[name="tags"], [name="onexisting_rejoin"], [name="onexisting_joindate"]')
+          .find('[name="tags"], [name="onexisting_rejoin"], [name="onexisting_joindate"], [name="onexisting_sms"]')
             .parents('tr').addClass('hidden').end().end()
           .find('[name="action_on_existing"]')
             .parents('tr').removeClass('hidden').end().end();
@@ -285,7 +340,7 @@
         $form
           .find('[name="action_on_existing"]')
             .parents('tr').addClass('hidden').end().end()
-          .find('[name="tags"], [name="onexisting_rejoin"], [name="onexisting_joindate"]')
+          .find('[name="tags"], [name="onexisting_rejoin"], [name="onexisting_joindate"], [name="onexisting_sms"]')
             .parents('tr').removeClass('hidden').end().end();
 
         // Set tags
@@ -312,12 +367,20 @@
         .find('[name="onexisting_joindate"]')
           .prop('checked', itemValue.onexisting_joindate.length > 0)
         .end()
+        .find('[name="onexisting_sms"]')
+          .prop('checked', (itemValue.onexisting_sms || '').length > 0)
+        .end()
 
       // Set subscription lists
       var $subscriptionLists = $form.find('[name="list_id"]').attr('disabled', true);
+      $.RMP_AJAX.hideNotConnected($subscriptionLists);
+
       $.RMP_AJAX('getListsBySystemName', { system_name: itemValue.chosen_system })
         .done(function(lists) {
           renderSubscriptionList(itemValue.list_id, lists, $subscriptionLists);
+        })
+        .fail(function(xhr, status, errorData) {
+          $.RMP_AJAX.showNotConnected($subscriptionLists, status, errorData); // PR1-I28
         });
   }
 

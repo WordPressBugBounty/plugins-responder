@@ -4,7 +4,8 @@ use RavMesser\Plugin\API as PluginAPI;
 
 $rmp_systems_names = PluginAPI::getConnectedSystemsNames();
 $rmp_systems_count = count( $rmp_systems_names );
-$rmp_chosen_system = $rmp_systems_names[0];
+// New form: the current system is pre-selected (PR1-I5).
+$rmp_chosen_system = PluginAPI::getPreferredSystemName();
 
 ?>
 
@@ -12,7 +13,7 @@ $rmp_chosen_system = $rmp_systems_names[0];
   <?php esc_html_e( 'טפסים ל-Contact Form 7', 'responder' ); ?>
 </h1>
 <p>
-	<a href="https://www.youtube.com/watch?v=ptTF3qpQtrk" target="_blank"><?php esc_html_e( 'צפייה בסרטון הדרכה', 'responder' ); ?></a>
+	<a href="<?php echo esc_url( PluginAPI::getHelpLink() ); ?>" target="_blank" rel="noopener"><?php esc_html_e( 'לפרטים נוספים לחצו כאן', 'responder' ); ?></a>
 </p>
 <form id="cf7-responder-form" class="responder-form-wrapper">
   <div class="responder-form-row">
@@ -44,11 +45,11 @@ $rmp_chosen_system = $rmp_systems_names[0];
 		</label>
 
 		<select id="chosen-system" name="chosen_system">
-		  <option value="responder" selected="selected">
+		  <option value="responder_live" <?php selected( $rmp_chosen_system, 'responder_live' ); ?>>
 			<?php esc_html_e( 'רב מסר', 'responder' ); ?>
 		  </option>
-		  <option value="responder_live">
-			<?php esc_html_e( 'רב מסר - מערכת חדשה', 'responder' ); ?>
+		  <option value="responder" <?php selected( $rmp_chosen_system, 'responder' ); ?>>
+			<?php esc_html_e( 'רב מסר הישנה', 'responder' ); ?>
 		  </option>
 		</select>
 	  </div>
@@ -98,6 +99,10 @@ $rmp_chosen_system = $rmp_systems_names[0];
 	<div class="responder-form-field one-liner">
 	  <input id="onexisting_joindate" type="checkbox" name="onexisting_joindate" value="joindate" />
 	  <label for="onexisting_joindate"><?php esc_html_e( 'אם הנמען קיים, לאפס את הותק שלו ברשימה', 'responder' ); ?></label>
+	</div>
+	<div class="responder-form-field one-liner">
+	  <input id="onexisting_sms" type="checkbox" name="onexisting_sms" value="sms" />
+	  <label for="onexisting_sms"><?php esc_html_e( 'אם הנמען ביקש הסרה מ-SMS, להחזיר אותו לקבלת SMS (רב מסר בלבד, רק כשמילא טלפון)', 'responder' ); ?></label>
 	</div>
   </div>
 
@@ -181,6 +186,8 @@ $rmp_chosen_system = $rmp_systems_names[0];
 	  <input id="send_params_to_link" type="checkbox" name="thank_you_params" />
 	  <label for="send_params_to_link"><?php esc_html_e( 'העברת פרמטרים לכתובת עמוד התודה', 'responder' ); ?></label>
 	</div>
+	<i class="form-info"><?php esc_html_e( 'כל השדות שמולאו בטופס, כולל מייל, טלפון ושדות מוסתרים, יתווספו לכתובת עמוד התודה.', 'responder' ); ?></i>
+	<br>
 
 	<i class="form-info">
 	  <?php esc_html_e( 'אם תשאירו את השדה ריק, הנמענים שלכם יישארו באותו דף לאחר שליחת טופס ההרשמה.', 'responder' ); ?>

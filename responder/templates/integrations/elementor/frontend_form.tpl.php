@@ -72,7 +72,8 @@ foreach ( $this->personal_fields as $personal_field ) {
 	$form_field['is_hidden']             = PluginHelpers::getVal( $settings, "is_hidden_field_{$form_field_id}", 'no' ) === 'yes';
 	$form_field['is_required']           = PluginHelpers::getVal( $settings, "{$form_field_id}_required", 'no' ) === 'yes';
 	$form_field['is_show']               = PluginHelpers::getVal( $settings, "is_show_{$form_field_id}", 'no' ) === 'yes';
-	$form_field['field_class']           = '';
+	// The field's own class: the "רוחב עמודה" control writes its width rule for it (PR1-I12).
+	$form_field['field_class']           = $form_field['id'];
 	$form_field['label']                 = PluginHelpers::getVal( $settings, "{$form_field_id}_field_label" );
 	$form_field['order']                 = PluginHelpers::getVal( $settings, "{$form_field_id}_order" );
 	$form_field['placeholder']           = '';
@@ -117,7 +118,7 @@ foreach ( $this->personal_fields as $personal_field ) {
 
 		if ( $form_field['enable_value_from_uri'] ) {
 			wp_parse_str( $_SERVER['QUERY_STRING'], $query_string );
-			$form_field['hidden_field_value'] = PluginHelpers::getVal( $query_string, $form_field['uri_param'], '' );
+			$form_field['hidden_field_value'] = PluginHelpers::getUriParamValue( $query_string, $form_field['uri_param'] );
 		}
 	}
 
