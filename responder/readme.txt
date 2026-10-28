@@ -1,10 +1,10 @@
-=== Responder ===
+=== רב מסר - תוסף הטפסים (Responder) ===
 Contributors: idangoldman, responderproducts, matiskiba
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 License: GPLv3
 Requires at least: 6.8
 Requires PHP: 7.4
-Stable tag: 4.4.5
+Stable tag: 4.4.6
 Tags: rav messer, responder, elementor, contact form 7, email marketing
 Tested up to: 7.1
 
@@ -35,8 +35,8 @@ Full step-by-step guide: [Rav Messer forms plugin for WordPress](https://support
 
 1. Make sure your form plugin (Contact Form 7, Elementor or Elementor Pro) is installed and active.
 2. In WordPress go to Plugins → Add New, search for "Rav Messer", then install and activate the plugin.
-3. In Rav Messer, click the gear icon (Settings) → "חיבורים חיצוניים", find "וורדפרס – תוסף טפסים", switch it on and copy the Token.
-4. In WordPress open "רב מסר - תוסף טפסים" → tab "חיבור לרב מסר", paste the Token and click Save. A green message confirms the connection.
+3. In Rav Messer, click the gear icon (Settings) → "חיבורים חיצוניים", find "וורדפרס - תוסף הטפסים", switch it on and copy the Token.
+4. In WordPress open "רב מסר - תוסף הטפסים" → tab "חיבור לרב מסר", paste the Token and click Save. A green message confirms the connection.
 5. Create your forms in the "Contact Form 7" or "טפסים לאלמנטור" tab, or add the "רב מסר" action under Actions After Submit in an Elementor Pro form.
 
 Still on the legacy system (רב מסר הישנה)? Use the key & secret in the "חיבור לרב מסר הישנה" section of the same tab.
@@ -55,6 +55,9 @@ Step-by-step guide with screenshots: [Rav Messer forms plugin for WordPress](htt
 8. לשונית נמענים – צפייה ברשימות ובנמענים
 
 == Changelog ==
+
+= 4.4.6 =
+* Plugin name is now "רב מסר - תוסף הטפסים" in the Plugins list, the admin menu and the settings page. The "לפני שמתחילים" tab and the installation steps use the current name of the connection in Rav Messer, "וורדפרס - תוסף הטפסים".
 
 = 4.4.5 =
 * New "Getting started" tab, a clearer "Connection" tab (masked credentials, clear error messages) and a footer with the support details.

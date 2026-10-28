@@ -1,7 +1,7 @@
 <?php defined( 'ABSPATH' ) or die( 'Hey, what are you doing here? You silly human!' );
 
 /*
-  Plugin Name: Responder
+  Plugin Name: רב מסר - תוסף הטפסים
   Plugin URI: https://wordpress.org/plugins/responder/
   Author: Rav Messer
   Author URI: https://responder.co.il
@@ -10,14 +10,14 @@
   License: GPLv3
   Requires at least: 6.8
   Requires PHP: 7.4
-  Version: 4.4.5
+  Version: 4.4.6
   Description: תוסף רב מסר מאפשר חיבור קל ופשוט עם התוספים הפופולריים – אלמנטור, אלמנטור פרו ו-Contact Form 7.
 הנמענים באתר הוורדפרס שלכם, שירשמו דרך הטפסים שתצרו, יועברו באופן אוטומטי לרשימה שתבחרו ברב מסר.
 חיבור זה ישדרג את מערך השיווק שלכם ויאפשר לכם לשלוח מסרים רלוונטיים לכל לקוח.
  */
 
 define( 'RAV_MESSER_MIN_PHP_VER', '7.4' );
-define( 'RAV_MESSER_VERSION', '4.4.5' );
+define( 'RAV_MESSER_VERSION', '4.4.6' );
 define( 'RAV_MESSER_MENU_SLUG', 'Responder_PluginSettings' );
 define( 'RAV_MESSER_OPTIONS_GROUP', 'Responder_Plugin-settings-group' );
 define( 'RAV_MESSER_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );

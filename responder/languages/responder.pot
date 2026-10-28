@@ -15,7 +15,7 @@ msgstr ""
 "X-Domain: responder\n"
 
 #. Plugin Name of the plugin
-msgid "Responder"
+msgid "רב מסר - תוסף הטפסים"
 msgstr ""
 
 #. Plugin URI of the plugin
@@ -750,7 +750,7 @@ msgstr ""
 
 #: plugin/Settings.php:63
 #: plugin/Settings.php:64
-msgid "רב מסר - תוסף טפסים"
+msgid "רב מסר - תוסף הטפסים"
 msgstr ""
 
 #: plugin/Settings.php:72

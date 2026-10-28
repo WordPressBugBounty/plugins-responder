@@ -60,8 +60,9 @@ class Settings {
 	public static function config( $key ) {
 		$configuration = array(
 			'menu_slug'  => RAV_MESSER_MENU_SLUG,
-			'menu_title' => esc_html__( 'רב מסר - תוסף טפסים', 'responder' ),
-			'page_title' => esc_html__( 'רב מסר - תוסף טפסים', 'responder' ),
+			// WordPress runs menu titles through wptexturize(), which turns " - " into a long dash; &#45; keeps a plain hyphen.
+			'menu_title' => str_replace( ' - ', ' &#45; ', esc_html__( 'רב מסר - תוסף הטפסים', 'responder' ) ),
+			'page_title' => esc_html__( 'רב מסר - תוסף הטפסים', 'responder' ),
 		);
 
 		return array_key_exists( $key, $configuration ) ? $configuration[ $key ] : '';
